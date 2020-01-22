@@ -223,7 +223,7 @@ int Dsm::treeDisconnect(int tid) {
         LOGE("[%s] Please login", __func__);
         return DSM_ERROR;
     }
-    smb_tid smbTid = (smb_tid) (tid);
+    smb_tid smbTid = (smb_tid)(tid);
     if (smb_tree_disconnect(session, smbTid) != DSM_SUCCESS) {
         LOGE("[%s] Disconnect a share fail", __func__);
         return DSM_ERROR;
@@ -244,7 +244,7 @@ string *Dsm::find(int tid, const char *pattern) {
         LOGE("[%s] Please login", __func__);
         return nullptr;
     }
-    smb_tid smbTid = (smb_tid) (tid);
+    smb_tid smbTid = (smb_tid)(tid);
     smb_file *files = smb_find(session, smbTid, pattern);
     if (files == nullptr) {
         LOGE("[%s] find file failed", __func__);
@@ -291,7 +291,7 @@ string *Dsm::fileStatus(int tid, const char *path) {
         LOGE("[%s] Path is illegal", __func__);
         return nullptr;
     }
-    smb_tid smbTid = (smb_tid) (tid);
+    smb_tid smbTid = (smb_tid)(tid);
     smb_stat stat = smb_fstat(session, smbTid, path);
 
     json result;

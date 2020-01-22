@@ -25,6 +25,8 @@ allprojects {
     }
 }
 
+def platformVersion = 21
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.0"
@@ -33,7 +35,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -41,6 +43,8 @@ android {
         externalNativeBuild {
             cmake {
                 cppFlags "-std=c++11"
+                arguments "-DANDROID_PLATFORM_LEVEL=${platformVersion}",
+                        '-DANDROID_TOOLCHAIN=clang'
             }
         }
 
@@ -51,7 +55,10 @@ android {
 
     sourceSets {
         main {
-            jniLibs.srcDirs = ['/src/main/jniLibs']
+            jniLibs.srcDirs = [
+                    '/src/main/jniLibs',
+                    '../distribution/android/libdsm/lib/',
+            ]
         }
     }
 
@@ -74,7 +81,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
 }
 
 publish {
@@ -83,7 +90,7 @@ publish {
     repoName = 'android'
     groupId = 'open.android.lib.dsm'
     artifactId = 'libdsm'
-    publishVersion = '1.0.0'
+    publishVersion = '1.1.0'
     desc = 'An Android wrapper for the libdsm'
     website = 'https://github.com/biezhihua/android_libdsm'
     repository = 'https://github.com/biezhihua/android_libdsm'

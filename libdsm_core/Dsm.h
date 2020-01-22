@@ -12,7 +12,7 @@
 using json = nlohmann::json;
 
 extern "C" {
-#include <Log.h>
+#include "Log.h"
 #include "bdsm/bdsm.h"
 };
 
