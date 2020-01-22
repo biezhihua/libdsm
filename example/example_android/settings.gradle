@@ -1,0 +1,2 @@
+include ':app', ':libdsm'
+rootProject.name='android_libdsm'
