@@ -3,7 +3,7 @@
 cmake_minimum_required(VERSION 3.4.1)
 
 # 设置库名称
-project(libdsm_core)
+project(open_dsm_core)
 
 # 指定C++版本
 set(CMAKE_CXX_STANDARD 11)
