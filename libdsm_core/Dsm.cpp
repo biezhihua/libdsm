@@ -1,7 +1,12 @@
 #include "Dsm.h"
 
 Dsm::Dsm() {
-
+    discoveryNS = nullptr;
+    loginNS = nullptr;
+    session = nullptr;
+    host = nullptr;
+    loginName = nullptr;
+    password = nullptr;
 }
 
 Dsm::~Dsm() {
@@ -122,7 +127,7 @@ const char *Dsm::inverse(const char *address) {
 int Dsm::login(const char *host, const char *loginName, const char *password) {
     if (host == nullptr || loginName == nullptr || password == nullptr) {
         LOGE("[%s] Params invalid host=%s loginName=%s password=%s", __func__, host, loginName,
-             password);
+                password);
         return DSM_ERROR;
     }
     if (loginNS != nullptr && session != nullptr) {
@@ -137,7 +142,7 @@ int Dsm::login(const char *host, const char *loginName, const char *password) {
         return DSM_ERROR;
     }
     if (smb_session_connect(session,
-                            host, addr.sin_addr.s_addr, SMB_TRANSPORT_TCP) == DSM_SUCCESS) {
+            host, addr.sin_addr.s_addr, SMB_TRANSPORT_TCP) == DSM_SUCCESS) {
         LOGD("[%s] Successfully connected to %s ", __func__, host);
     } else {
         LOGD("[%s] Unable to connect to %s ", __func__, host);
@@ -223,7 +228,7 @@ int Dsm::treeDisconnect(int tid) {
         LOGE("[%s] Please login", __func__);
         return DSM_ERROR;
     }
-    smb_tid smbTid = (smb_tid)(tid);
+    smb_tid smbTid = (smb_tid) (tid);
     if (smb_tree_disconnect(session, smbTid) != DSM_SUCCESS) {
         LOGE("[%s] Disconnect a share fail", __func__);
         return DSM_ERROR;
@@ -244,7 +249,7 @@ string *Dsm::find(int tid, const char *pattern) {
         LOGE("[%s] Please login", __func__);
         return nullptr;
     }
-    smb_tid smbTid = (smb_tid)(tid);
+    smb_tid smbTid = (smb_tid) (tid);
     smb_file *files = smb_find(session, smbTid, pattern);
     if (files == nullptr) {
         LOGE("[%s] find file failed", __func__);
@@ -291,7 +296,7 @@ string *Dsm::fileStatus(int tid, const char *path) {
         LOGE("[%s] Path is illegal", __func__);
         return nullptr;
     }
-    smb_tid smbTid = (smb_tid)(tid);
+    smb_tid smbTid = (smb_tid) (tid);
     smb_stat stat = smb_fstat(session, smbTid, path);
 
     json result;

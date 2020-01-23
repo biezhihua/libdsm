@@ -1,11 +1,3 @@
-//
-//  libdsm_ios.h
-//  libdsm_ios
-//
-//  Created by biezhihua on 2020/1/23.
-//  Copyright © 2020 biezhihua. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 
 //! Project version number for libdsm_ios.

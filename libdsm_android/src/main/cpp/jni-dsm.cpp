@@ -40,7 +40,7 @@ static void onEvent(jobject self, jmethodID method, int what, const char *json) 
 
         if (env->ExceptionCheck()) {
             jthrowable exc = env->ExceptionOccurred();
-            jniLogException(env, ANDROID_LOG_ERROR, "[DSM][NATIVE]", exc);
+            jniLogException(env, ANDROID_LOG_ERROR, "[DSM][JNI]", exc);
             env->ExceptionClear();
         }
 

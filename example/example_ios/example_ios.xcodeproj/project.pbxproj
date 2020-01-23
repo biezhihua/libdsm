@@ -15,6 +15,7 @@
 		9D2BA46F23D8C87400EA19A8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D2BA46D23D8C87400EA19A8 /* LaunchScreen.storyboard */; };
 		9D2BA47A23D8C87500EA19A8 /* example_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2BA47923D8C87500EA19A8 /* example_iosTests.swift */; };
 		9D2BA48523D8C87500EA19A8 /* example_iosUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2BA48423D8C87500EA19A8 /* example_iosUITests.swift */; };
+		9DB3499023D9D26E00F7FE36 /* libdsm_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DEA50BA23D94D5A00932DB1 /* libdsm_ios.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9DB3499023D9D26E00F7FE36 /* libdsm_ios.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
