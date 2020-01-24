@@ -90,3 +90,5 @@ fastlane/test_output
 iOSInjectionProject/
 
 .idea
+
+libdsm_ios.xcodeproj/project.xcworkspace/xcuserdata
