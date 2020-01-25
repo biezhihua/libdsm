@@ -9,10 +9,10 @@ import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
 
 /** LibdsmPlugin */
-public class LibdsmPlugin: FlutterPlugin, MethodCallHandler {
+public class DsmPlugin: FlutterPlugin, MethodCallHandler {
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     val channel = MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "libdsm")
-    channel.setMethodCallHandler(LibdsmPlugin());
+    channel.setMethodCallHandler(DsmPlugin());
   }
 
   // This static function is optional and equivalent to onAttachedToEngine. It supports the old
@@ -28,7 +28,7 @@ public class LibdsmPlugin: FlutterPlugin, MethodCallHandler {
     @JvmStatic
     fun registerWith(registrar: Registrar) {
       val channel = MethodChannel(registrar.messenger(), "libdsm")
-      channel.setMethodCallHandler(LibdsmPlugin())
+      channel.setMethodCallHandler(DsmPlugin())
     }
   }
 

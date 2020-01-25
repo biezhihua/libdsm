@@ -8,5 +8,5 @@ import Foundation
 import libdsm
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
-  LibdsmPlugin.register(with: registry.registrar(forPlugin: "LibdsmPlugin"))
+  DsmPlugin.register(with: registry.registrar(forPlugin: "DsmPlugin"))
 }

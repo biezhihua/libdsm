@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 
 class Libdsm {
-  static const MethodChannel _channel =
-      const MethodChannel('libdsm');
+  static const MethodChannel _channel = const MethodChannel('libdsm');
 
   static Future<String> get platformVersion async {
     final String version = await _channel.invokeMethod('getPlatformVersion');

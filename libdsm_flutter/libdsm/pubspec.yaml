@@ -33,11 +33,11 @@ flutter:
     platforms:
       android:
         package: open.flutter.libdsm
-        pluginClass: LibdsmPlugin
+        pluginClass: DsmPlugin
       ios:
-        pluginClass: LibdsmPlugin
+        pluginClass: DsmPlugin
       macos:
-        pluginClass: LibdsmPlugin
+        pluginClass: DsmPlugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

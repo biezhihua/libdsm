@@ -1,4 +1,4 @@
-#import "LibdsmPlugin.h"
+#import "DsmPlugin.h"
 #if __has_include(<libdsm/libdsm-Swift.h>)
 #import <libdsm/libdsm-Swift.h>
 #else
@@ -8,8 +8,8 @@
 #import "libdsm-Swift.h"
 #endif
 
-@implementation LibdsmPlugin
+@implementation DsmPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  [SwiftLibdsmPlugin registerWithRegistrar:registrar];
+  [SwiftDsmPlugin registerWithRegistrar:registrar];
 }
 @end

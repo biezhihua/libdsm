@@ -1,10 +1,10 @@
 import Flutter
 import UIKit
 
-public class SwiftLibdsmPlugin: NSObject, FlutterPlugin {
+public class SwiftDsmPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "libdsm", binaryMessenger: registrar.messenger())
-    let instance = SwiftLibdsmPlugin()
+    let instance = SwiftDsmPlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
 
