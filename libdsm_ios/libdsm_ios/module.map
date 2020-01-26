@@ -1,0 +1,4 @@
+module dsm_birdge [system] {
+    header "./birdge/module_birdge.h"
+    export *
+}
