@@ -7,6 +7,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
+import open.android.lib.dsm.Dsm
 
 /** DsmPlugin */
 class DsmPlugin : FlutterPlugin, MethodCallHandler {
@@ -35,6 +36,8 @@ class DsmPlugin : FlutterPlugin, MethodCallHandler {
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         if (call.method == "getPlatformVersion") {
             result.success("Android ${android.os.Build.VERSION.RELEASE}")
+        } else if (call.method == "Dsm_create") {
+            result.success(Dsm())
         } else {
             result.notImplemented()
         }

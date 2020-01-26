@@ -14,6 +14,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
 
+  Dsm dsm = Dsm();
+
   @override
   void initState() {
     super.initState();
@@ -25,7 +27,7 @@ class _MyAppState extends State<MyApp> {
     String platformVersion;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      platformVersion = await Libdsm.platformVersion;
+      platformVersion = await dsm.platformVersion;
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
