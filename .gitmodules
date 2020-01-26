@@ -1,0 +1,3 @@
+[submodule "libdsm_ios"]
+	path = libdsm_ios
+	url = https://github.com/biezhihua/libdsm_ios.git
