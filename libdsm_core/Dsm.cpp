@@ -139,6 +139,9 @@ int Dsm::login(const char *host, const char *loginName, const char *password) {
     struct sockaddr_in addr{};
     if (netbios_ns_resolve(loginNS, host, NETBIOS_FILESERVER, &addr.sin_addr.s_addr)) {
         LOGE("[%s] Unable to perform name resolution for %s ", __func__, host);
+        smb_session_destroy(session);
+        netbios_ns_destroy(loginNS);
+        session = nullptr;
         return DSM_ERROR;
     }
     if (smb_session_connect(session,
@@ -146,6 +149,9 @@ int Dsm::login(const char *host, const char *loginName, const char *password) {
         LOGD("[%s] Successfully connected to %s ", __func__, host);
     } else {
         LOGD("[%s] Unable to connect to %s ", __func__, host);
+        smb_session_destroy(session);
+        netbios_ns_destroy(loginNS);
+        session = nullptr;
         return DSM_ERROR;
     }
     smb_session_set_creds(session, host, loginName, password);
@@ -160,6 +166,9 @@ int Dsm::login(const char *host, const char *loginName, const char *password) {
         Dsm::password = new string(password);
         return DSM_SUCCESS;
     } else {
+        smb_session_destroy(session);
+        netbios_ns_destroy(loginNS);
+        session = nullptr;
         return DSM_ERROR;
     }
 }
