@@ -13,21 +13,21 @@ void (*_Nonnull DSM_onEventFromNative)(_DsmSelf *_Nonnull dsmSelf, int what, con
 class BirdgeDsm : public Dsm {
 
 public:
-    _DsmSelf *dsmSelf = nullptr;
+    _DsmSelf *_dsmSelf = nullptr;
     OnEventFromNative onEvent = nullptr;
 
 private:
     void onDiscoveryEntryAdded(const char *json) override {
         LOGD("[%s] json=%s", __func__, json);
         if (onEvent != nullptr) {
-            (onEvent)(dsmSelf, EVENT_TYPE_ON_DISCOVERY_ADD, json);
+            (onEvent)(_dsmSelf, EVENT_TYPE_ON_DISCOVERY_ADD, json);
         }
     }
 
     void onDiscoveryEntryRemoved(const char *json) override {
         LOGD("[%s] json=%s", __func__, json);
         if (onEvent != nullptr) {
-            (onEvent)(dsmSelf, EVENT_TYPE_ON_DISCOVERY_REMOVE, json);
+            (onEvent)(_dsmSelf, EVENT_TYPE_ON_DISCOVERY_REMOVE, json);
         }
     }
 
@@ -58,7 +58,7 @@ void DSM_init(
     if (dsm == nullptr) {
         dsm = new BirdgeDsm();
         dsm->onEvent = DSM_onEventFromNative;
-        dsm->dsmSelf = dsmSelf;
+        dsm->_dsmSelf = dsmSelf;
         if (dsm->onEvent == nullptr) {
             LOGE("[%s] Event is null", __func__);
         }
@@ -77,7 +77,7 @@ void DSM_release(
 ) {
     BirdgeDsm *dsm = getBirdgeDsm(dsmSelf, dsmNative);
     if (dsm != nullptr) {
-        dsm->dsmSelf = nullptr;
+        dsm->_dsmSelf = nullptr;
         dsm->onEvent = nullptr;
         setBirdgeDsm(dsmSelf, dsmNative, 0);
         dsm = nullptr;

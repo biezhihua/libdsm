@@ -5,58 +5,146 @@ import 'package:flutter/services.dart';
 class Dsm {
   static const String TAG = "[DSM][FLUTTER]";
 
-  final MethodChannel _channel = const MethodChannel('libdsm');
+  static const int EVENT_ENTRY_ADDED = 0;
 
-   Future<String> get platformVersion async {
-    final String version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
-  }
+  static const int EVENT_ENTRY_REMOVE = 1;
+
+  String _dsmId = null;
+
+  MethodChannel _methodChannel;
+  EventChannel _eventChannel;
+  Stream<String>_discoveryListener;
 
   Dsm() {
-
+    _methodChannel = const MethodChannel('open.flutter/libdsm');
+    _eventChannel = const EventChannel('open.flutter/discovery_listener');
   }
 
-  void init() {}
-
-  void release() {}
-
-  void startDiscovery(int timeout) {}
-
-  void stopDiscovery() {}
-
-  String resolve(String name) {
-    return "";
+  Stream<String> get onDiscoveryChanged {
+    if (_discoveryListener == null) {
+      _discoveryListener = _eventChannel
+          .receiveBroadcastStream(_dsmId)
+          .cast<String>();
+    }
+    return _discoveryListener;
   }
 
-  String inverse(String address) {
-    return "";
+  void init() async {
+    if (_dsmId != null){
+      return;
+    }
+    _dsmId = await _methodChannel.invokeMethod<String>('DSM_init');
   }
 
-  int login(String host, String loginName, String password) {
-    return 0;
+  void release() async {
+    if (_dsmId == null) {
+      return;
+    }
+    await _methodChannel.invokeMethod('DSM_release', <String, dynamic>{
+      'id': _dsmId,
+    });
+    _dsmId = null;
   }
 
-  int logout() {
-    return 0;
+  void startDiscovery({int timeout = 4}) async {
+    if (_dsmId == null) {
+      return;
+    }
+    await _methodChannel.invokeMethod('DSM_start_discovery',
+        <String, dynamic>{'id': _dsmId, 'time_out': timeout});
   }
 
-  String getShareList() {
-    return "";
+  void stopDiscovery() async {
+    if (_dsmId == null) {
+      return;
+    }
+    await _methodChannel
+        .invokeMethod('DSM_stop_discovery', <String, dynamic>{'id': _dsmId});
   }
 
-  int treeConnect(String name) {
-    return 0;
+  Future<String> resolve(String name) async {
+    if (_dsmId == null) {
+      return "";
+    }
+    String address = await _methodChannel.invokeMethod(
+        'DSM_resolve', <String, dynamic>{'id': _dsmId, 'name': name});
+    return address;
   }
 
-  String treeDisconnect(int tid) {
-    return "";
+  Future<String> inverse(String address) async {
+    if (_dsmId == null) {
+      return "";
+    }
+    String name = await _methodChannel.invokeMethod(
+        'DSM_inverse', <String, dynamic>{'id': _dsmId, 'address': address});
+    return name;
   }
 
-  String find(int tid, String pattern) {
-    return "";
+  Future<int> login(String host, String loginName, String password) async {
+    if (_dsmId == null) {
+      return 0;
+    }
+    int result =
+        await _methodChannel.invokeMethod('DSM_login', <String, dynamic>{
+      'id': _dsmId,
+      'host': host,
+      'login_name': loginName,
+      'password': password,
+    });
+    return result;
   }
 
-  String fileStatus(int tid, String path) {
-    return "";
+  Future<int> logout() async {
+    if (_dsmId == null) {
+      return 0;
+    }
+    int result = await _methodChannel
+        .invokeMethod('DSM_logout', <String, dynamic>{'id': _dsmId});
+    return result;
+  }
+
+  Future<String> getShareList() async {
+    if (_dsmId == null) {
+      return "";
+    }
+    String listJson = await _methodChannel
+        .invokeMethod('DSM_get_share_list', <String, dynamic>{'id': _dsmId});
+    return listJson;
+  }
+
+  Future<int> treeConnect(String name) async {
+    if (_dsmId == null) {
+      return 0;
+    }
+    int tid = await _methodChannel.invokeMethod(
+        'DSM_tree_connect', <String, dynamic>{'id': _dsmId, 'name': name});
+    return tid;
+  }
+
+  Future<int> treeDisconnect(int tid) async {
+    if (_dsmId == null) {
+      return 0;
+    }
+    int result = await _methodChannel.invokeMethod(
+        'DSM_tree_disconnect', <String, dynamic>{'id': _dsmId, 'tid': tid});
+    return result;
+  }
+
+  Future<String> find(int tid, String pattern) async {
+    if (_dsmId == null) {
+      return "";
+    }
+    String resultJson = await _methodChannel.invokeMethod('DSM_find',
+        <String, dynamic>{'id': _dsmId, 'tid': tid, 'pattern': pattern});
+    return resultJson;
+  }
+
+  Future<String> fileStatus(int tid, String path) async {
+    if (_dsmId == null) {
+      return "";
+    }
+    String resultJson = await _methodChannel.invokeMethod('DSM_file_status',
+        <String, dynamic>{'id': _dsmId, 'tid': tid, 'path': path});
+    return resultJson;
   }
 }

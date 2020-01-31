@@ -35,6 +35,10 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
+        }
     }
     lintOptions {
         disable 'InvalidPackage'
@@ -44,5 +48,5 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation 'open.android.lib.dsm:libdsm:1.1.0'
+    implementation 'open.android.lib.dsm:libdsm:1.1.4'
 }

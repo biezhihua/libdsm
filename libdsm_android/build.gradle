@@ -35,7 +35,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
-        versionName "1.1.0"
+        versionName "1.1.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -49,7 +49,7 @@ android {
         }
 
         ndk {
-            abiFilters 'armeabi-v7a'
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
         }
     }
 
@@ -90,7 +90,7 @@ publish {
     repoName = 'android'
     groupId = 'open.android.lib.dsm'
     artifactId = 'libdsm'
-    publishVersion = '1.1.0'
+    publishVersion = '1.1.4'
     desc = 'An Android wrapper for the libdsm'
     website = 'https://github.com/biezhihua/android_libdsm'
     repository = 'https://github.com/biezhihua/android_libdsm'

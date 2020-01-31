@@ -64,6 +64,7 @@ public class Dsm {
     }
 
     deinit {
+        dsmSelf.dsm = nil
         dsmRelease()
     }
 
