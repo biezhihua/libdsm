@@ -15,7 +15,7 @@
 		9D2BA46F23D8C87400EA19A8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D2BA46D23D8C87400EA19A8 /* LaunchScreen.storyboard */; };
 		9D2BA47A23D8C87500EA19A8 /* example_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2BA47923D8C87500EA19A8 /* example_iosTests.swift */; };
 		9D2BA48523D8C87500EA19A8 /* example_iosUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2BA48423D8C87500EA19A8 /* example_iosUITests.swift */; };
-		9DB3499023D9D26E00F7FE36 /* libdsm_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DEA50BA23D94D5A00932DB1 /* libdsm_ios.framework */; };
+		9DD4A43323E4708500D5AF25 /* libdsm_ios.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9DEA50BA23D94D5A00932DB1 /* libdsm_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +60,16 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9DD4A43423E4709500D5AF25 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				9DD4A43323E4708500D5AF25 /* libdsm_ios.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -85,7 +95,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DB3499023D9D26E00F7FE36 /* libdsm_ios.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,6 +196,7 @@
 				9D2BA45C23D8C87300EA19A8 /* Frameworks */,
 				9D2BA45D23D8C87300EA19A8 /* Resources */,
 				9D2BA49E23D8C89900EA19A8 /* Embed Frameworks */,
+				9DD4A43423E4709500D5AF25 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -441,7 +451,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -496,6 +506,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -515,7 +526,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "open.ios.example-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = open.ios.libdsm.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -533,7 +544,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "open.ios.example-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = open.ios.libdsm.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
