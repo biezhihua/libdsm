@@ -35,7 +35,7 @@ private:
 
 static BirdgeDsm *getBirdgeDsm(_DsmSelf *_Nullable dsmSelf, _DsmNative *_Nullable dsmNative) {
     if (dsmSelf != nullptr && dsmNative != nullptr && *dsmNative != 0) {
-        return (BirdgeDsm *) dsmNative;
+        return (BirdgeDsm *) *dsmNative;
     }
     LOGE("[%s] Params is illegal", __func__);
     return nullptr;

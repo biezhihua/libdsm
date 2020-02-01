@@ -21,6 +21,24 @@ class ViewController: UIViewController {
         dsm.discoveryListener = MyDiscoveryListener()
         
         Log.d("Main", "dsm \(dsm)")
+        
+        let urlString:String = "https://8.8.8.8"
+    
+        let url = URL(string: urlString)
+        
+        let request = URLRequest(url: url!)
+        
+        let config = URLSessionConfiguration.default
+        
+        let session = URLSession(configuration: config)
+        
+        let task = session.dataTask(with: request) { (data,response,error) in
+               
+                 
+        }
+        
+        task.resume()
+
     }
     
     struct MyDiscoveryListener : DiscoveryListener {

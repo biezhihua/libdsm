@@ -63,16 +63,18 @@ static void on_entry_removed(void *p_opaque, netbios_ns_entry *entry) {
 }
 
 int Dsm::startDiscovery(unsigned int timeout) {
-    discoveryNS = netbios_ns_new();
-    if (discoveryNS != nullptr) {
-        netbios_ns_discover_callbacks callbacks;
-        callbacks.p_opaque = this;
-        callbacks.pf_on_entry_added = on_entry_added;
-        callbacks.pf_on_entry_removed = on_entry_removed;
-        if (netbios_ns_discover_start(discoveryNS, timeout, &callbacks) == -1) {
-            return DSM_ERROR;
+    if (discoveryNS == nullptr) {
+        discoveryNS = netbios_ns_new();
+        if (discoveryNS != nullptr) {
+            netbios_ns_discover_callbacks callbacks;
+            callbacks.p_opaque = this;
+            callbacks.pf_on_entry_added = on_entry_added;
+            callbacks.pf_on_entry_removed = on_entry_removed;
+            if (netbios_ns_discover_start(discoveryNS, timeout, &callbacks) == -1) {
+                return DSM_ERROR;
+            }
+            return DSM_SUCCESS;
         }
-        return DSM_SUCCESS;
     }
     return DSM_ERROR;
 }
@@ -81,6 +83,7 @@ int Dsm::stopDiscovery() {
     if (discoveryNS != nullptr) {
         netbios_ns_discover_stop(discoveryNS);
         netbios_ns_destroy(discoveryNS);
+        discoveryNS = nullptr;
         return DSM_SUCCESS;
     }
     return DSM_ERROR;
