@@ -1,0 +1,11 @@
+framework module libdsm_ios {
+  umbrella header "libdsm_ios.h"
+
+  export *
+  module * { export * }
+}
+
+module libdsm_ios.Swift {
+    header "libdsm_ios-Swift.h"
+    requires objc
+}
