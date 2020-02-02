@@ -10,7 +10,7 @@ public class SwiftDsmPlugin: NSObject, FlutterPlugin {
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         
-        NSLog("call = \(call) result = \(result)  ")
+        NSLog("call = \(call) result = \(result) biehzihua ")
         
         if (call.method == "DSM_create"){
             result("iOS biezhihua")
