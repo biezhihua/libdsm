@@ -15,7 +15,7 @@ public class SwiftDsmPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
     static  let PATTERN = "pattern"
     static  let PATH = "path"
     
-    let cacheDsm: [String: Dsm] = [:]
+    var dsmCache: [String: Dsm] = [:]
     
     public static func register(with registrar: FlutterPluginRegistrar) {
         let methodChannel = FlutterMethodChannel(name: "open.flutter/libdsm", binaryMessenger: registrar.messenger())
@@ -27,13 +27,30 @@ public class SwiftDsmPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         
-        NSLog("call.method = \(call.method) call.arguments = \(String(describing: call.arguments))")
+        //        call.method = DSM_release call.arguments = Optional({
+        //            id = "51CDB8F3-5DA0-466A-A6E2-22198AE4D4D1";
+        //        })
+        
+        let args = call.arguments as? [String:String]
+        
+        NSLog("call.method = \(call.method) call.arguments = \(String(describing: args))")
         
         switch call.method {
         case "DSM_init":
-            result(nil)
+            let dsm = Dsm()
+            let dsmId = UUID.init().uuidString
+            dsmCache[dsmId] = dsm
+            result(dsmId)
             break
         case "DSM_release":
+            if (args == nil || args?[SwiftDsmPlugin.ID] == nil) {
+                result(FlutterError(code: "PARAM_ERROR", message: "Illegal parameter", details: nil))
+                 break
+            }
+            let dsmId = args![SwiftDsmPlugin.ID]!
+            let dsm = dsmCache[dsmId]
+            dsmCache.removeValue(forKey: dsmId)
+            dsm?.dsmRelease()
             result(nil)
             break
         case "DSM_start_discovery":
