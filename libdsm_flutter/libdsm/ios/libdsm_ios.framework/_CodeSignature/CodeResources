@@ -14,23 +14,23 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		kMw0hinwdamCgMnG38tCh6oM368=
+		hrax3fY4+12ceJZcvVSpcZxnrF8=
 		</data>
 		<key>Modules/libdsm_ios.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<data>
-		VJLwytpVPdlowts/5QaddySsa0I=
+		sDPVHhqS4oQn5SVgPlUMRnmeKNg=
 		</data>
 		<key>Modules/libdsm_ios.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		4D4zj1yikuamD6Ylf28qXgZ4c2s=
+		nIG13W4GFOalIV26zLkYnvMwa18=
 		</data>
 		<key>Modules/libdsm_ios.swiftmodule/arm64.swiftdoc</key>
 		<data>
-		VJLwytpVPdlowts/5QaddySsa0I=
+		sDPVHhqS4oQn5SVgPlUMRnmeKNg=
 		</data>
 		<key>Modules/libdsm_ios.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		4D4zj1yikuamD6Ylf28qXgZ4c2s=
+		nIG13W4GFOalIV26zLkYnvMwa18=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -49,6 +49,10 @@
 	<dict>
 		<key>Headers/libdsm_ios-Swift.h</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			Pej4zDf9Q1lt/nEhdpfr9iD97bs=
+			</data>
 			<key>hash2</key>
 			<data>
 			53d2fZCCw9esCL+7d1sCe9zR7lY3mFkxK7aRumRjZeQ=
@@ -56,6 +60,10 @@
 		</dict>
 		<key>Headers/libdsm_ios.h</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			I7Zm390auM5cjzUbjxlM8Nsu0WE=
+			</data>
 			<key>hash2</key>
 			<data>
 			Lk79rAtDYYAGEtr115K3585h89UnwL9wTPk2DEOIPNU=
@@ -63,34 +71,54 @@
 		</dict>
 		<key>Modules/libdsm_ios.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			sDPVHhqS4oQn5SVgPlUMRnmeKNg=
+			</data>
 			<key>hash2</key>
 			<data>
-			93l2URaWtjcGXhNIfVSYIOoSH8172VcM704sZ/IxPYg=
+			NiHTTVlCLFBeoyjHf9JdR2wzNgKJyEIcGijSN9bQ58w=
 			</data>
 		</dict>
 		<key>Modules/libdsm_ios.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			nIG13W4GFOalIV26zLkYnvMwa18=
+			</data>
 			<key>hash2</key>
 			<data>
-			ZMwgfcl48iSrp6q5nQvVes2UAG7vIz7173+aJlpd7SE=
+			uvrpQC6yh4jC01IiIh8taQqInQLO6URLz8z7+Eo4WJc=
 			</data>
 		</dict>
 		<key>Modules/libdsm_ios.swiftmodule/arm64.swiftdoc</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			sDPVHhqS4oQn5SVgPlUMRnmeKNg=
+			</data>
 			<key>hash2</key>
 			<data>
-			93l2URaWtjcGXhNIfVSYIOoSH8172VcM704sZ/IxPYg=
+			NiHTTVlCLFBeoyjHf9JdR2wzNgKJyEIcGijSN9bQ58w=
 			</data>
 		</dict>
 		<key>Modules/libdsm_ios.swiftmodule/arm64.swiftmodule</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			nIG13W4GFOalIV26zLkYnvMwa18=
+			</data>
 			<key>hash2</key>
 			<data>
-			ZMwgfcl48iSrp6q5nQvVes2UAG7vIz7173+aJlpd7SE=
+			uvrpQC6yh4jC01IiIh8taQqInQLO6URLz8z7+Eo4WJc=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			CPw9IqGmuqgIkIxS1YDMrt/om3g=
+			</data>
 			<key>hash2</key>
 			<data>
 			glRqg8pm+ue5b75fFVLrMCQ9C4tWva/vj60dRR73K6s=
@@ -98,6 +126,10 @@
 		</dict>
 		<key>PrivateHeaders/birdge.hpp</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			S7dKR4OLpRPzp6+XS8/2D0fUgoQ=
+			</data>
 			<key>hash2</key>
 			<data>
 			9gUZP6aAq2tQAtFLPSkmd+X5jC0LyNCqM2gV9UD6oMg=
@@ -105,6 +137,10 @@
 		</dict>
 		<key>PrivateHeaders/module_birdge.h</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			Bl/uWL370ZFlSHpRqn9dH1qVRPg=
+			</data>
 			<key>hash2</key>
 			<data>
 			IW0luPJjA/dg0OcCEhvcf3OPtjDBl3p2lrWOopzcEIs=

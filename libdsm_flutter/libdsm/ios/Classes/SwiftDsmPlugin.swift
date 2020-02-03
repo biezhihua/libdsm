@@ -1,5 +1,6 @@
 import Flutter
 import UIKit
+import libdsm_ios
 
 public class SwiftDsmPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
     
@@ -14,7 +15,7 @@ public class SwiftDsmPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
     static  let PATTERN = "pattern"
     static  let PATH = "path"
     
-    let cacheDsm: [String: String] = [:]
+    let cacheDsm: [String: Dsm] = [:]
     
     public static func register(with registrar: FlutterPluginRegistrar) {
         let methodChannel = FlutterMethodChannel(name: "open.flutter/libdsm", binaryMessenger: registrar.messenger())

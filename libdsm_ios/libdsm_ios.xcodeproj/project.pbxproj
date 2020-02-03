@@ -426,6 +426,7 @@
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../distribution/ios/libdsm/include\"";
 				INFOPLIST_FILE = libdsm_ios/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -457,6 +458,7 @@
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../distribution/ios/libdsm/include\"";
 				INFOPLIST_FILE = libdsm_ios/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
