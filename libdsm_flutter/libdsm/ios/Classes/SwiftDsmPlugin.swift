@@ -2,7 +2,7 @@ import Flutter
 import UIKit
 import libdsm_ios
 
-public class SwiftDsmPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
+public class SwiftDsmPlugin: NSObject, FlutterPlugin, FlutterStreamHandler,DiscoveryListener{
     
     static  let ID = "id"
     static  let TIME_OUT = "time_out"
@@ -31,7 +31,7 @@ public class SwiftDsmPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
         //            id = "51CDB8F3-5DA0-466A-A6E2-22198AE4D4D1";
         //        })
         
-        let args = call.arguments as? [String:String]
+        let args = call.arguments as? [String:Any]
         
         NSLog("call.method = \(call.method) call.arguments = \(String(describing: args))")
         
@@ -45,46 +45,160 @@ public class SwiftDsmPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
         case "DSM_release":
             if (args == nil || args?[SwiftDsmPlugin.ID] == nil) {
                 result(FlutterError(code: "PARAM_ERROR", message: "Illegal parameter", details: nil))
-                 break
+                break
             }
-            let dsmId = args![SwiftDsmPlugin.ID]!
+            let dsmId = args![SwiftDsmPlugin.ID] as! String
             let dsm = dsmCache[dsmId]
             dsmCache.removeValue(forKey: dsmId)
             dsm?.dsmRelease()
             result(nil)
             break
         case "DSM_start_discovery":
-            result(nil)
+            if (args == nil || args?[SwiftDsmPlugin.ID] == nil) {
+                result(FlutterError(code: "PARAM_ERROR", message: "Illegal parameter", details: nil))
+                break
+            } else {
+                let dsmId = args![SwiftDsmPlugin.ID] as! String
+                let timeOut = args![SwiftDsmPlugin.TIME_OUT] as? Int32
+                let dsm = dsmCache[dsmId]
+                dsm?.startDiscovery(timeOut == nil ? 4 : timeOut!)
+                result(nil)
+            }
             break
         case "DSM_stop_discovery":
-            result(nil)
+            if (args == nil || args?[SwiftDsmPlugin.ID] == nil) {
+                result(FlutterError(code: "PARAM_ERROR", message: "Illegal parameter", details: nil))
+                break
+            } else {
+                let dsmId = args![SwiftDsmPlugin.ID] as! String
+                let dsm = dsmCache[dsmId]
+                dsm?.stopDiscovery()
+                result(nil)
+            }
             break
         case "DSM_resolve":
-            result(nil)
+            if (args == nil || args?[SwiftDsmPlugin.ID] == nil || args?[SwiftDsmPlugin.NAME] == nil) {
+                result(FlutterError(code: "PARAM_ERROR", message: "Illegal parameter", details: nil))
+                break
+            } else {
+                let dsmId = args![SwiftDsmPlugin.ID] as! String
+                let name = args![SwiftDsmPlugin.NAME] as! String
+                let dsm = dsmCache[dsmId]
+                result(dsm?.resolve(name))
+            }
             break
         case "DSM_inverse":
-            result(nil)
+            if (args == nil || args?[SwiftDsmPlugin.ID] == nil || args?[SwiftDsmPlugin.ADDRESS] == nil) {
+                result(FlutterError(code: "PARAM_ERROR", message: "Illegal parameter", details: nil))
+                break
+            } else {
+                let dsmId = args![SwiftDsmPlugin.ID] as! String
+                let address = args![SwiftDsmPlugin.ADDRESS] as! String
+                let dsm = dsmCache[dsmId]
+                result(dsm?.inverse(address))
+            }
             break
         case "DSM_login":
-            result(nil)
+            if (args == nil ||
+                args?[SwiftDsmPlugin.ID] == nil ||
+                args?[SwiftDsmPlugin.HOST] == nil ||
+                args?[SwiftDsmPlugin.LOGIN_NAME] == nil ||
+                args?[SwiftDsmPlugin.PASSWORD] == nil
+                ) {
+                result(FlutterError(code: "PARAM_ERROR", message: "Illegal parameter", details: nil))
+                break
+            } else {
+                let dsmId = args![SwiftDsmPlugin.ID] as! String
+                let host = args![SwiftDsmPlugin.ADDRESS] as! String
+                let loginName = args![SwiftDsmPlugin.LOGIN_NAME] as! String
+                let password = args![SwiftDsmPlugin.PASSWORD] as! String
+                let dsm = dsmCache[dsmId]
+                result(dsm?.login(host, loginName, password))
+            }
             break
         case "DSM_logout":
-            result(nil)
+            if (args == nil ||
+                args?[SwiftDsmPlugin.ID] == nil
+                ) {
+                result(FlutterError(code: "PARAM_ERROR", message: "Illegal parameter", details: nil))
+                break
+            } else {
+                let dsmId = args![SwiftDsmPlugin.ID] as! String
+                let dsm = dsmCache[dsmId]
+                result(dsm?.logout())
+            }
             break
         case "DSM_get_share_list":
-            result(nil)
+            if (args == nil ||
+                args?[SwiftDsmPlugin.ID] == nil
+                ) {
+                result(FlutterError(code: "PARAM_ERROR", message: "Illegal parameter", details: nil))
+                break
+            } else {
+                let dsmId = args![SwiftDsmPlugin.ID] as! String
+                let dsm = dsmCache[dsmId]
+                result(dsm?.getShareList())
+            }
             break
         case "DSM_tree_connect":
-            result(nil)
+            if (args == nil ||
+                args?[SwiftDsmPlugin.ID] == nil ||
+                args?[SwiftDsmPlugin.NAME] == nil
+                ) {
+                result(FlutterError(code: "PARAM_ERROR", message: "Illegal parameter", details: nil))
+                break
+            } else {
+                let dsmId = args![SwiftDsmPlugin.ID] as! String
+                let name = args![SwiftDsmPlugin.NAME] as! String
+                let dsm = dsmCache[dsmId]
+                result(dsm?.treeConnect(name))
+            }
             break
         case "DSM_tree_disconnect":
-            result(nil)
+            if (args == nil ||
+                args?[SwiftDsmPlugin.ID] == nil ||
+                args?[SwiftDsmPlugin.TID] == nil
+                ) {
+                result(FlutterError(code: "PARAM_ERROR", message: "Illegal parameter", details: nil))
+                break
+            } else {
+                let dsmId = args![SwiftDsmPlugin.ID] as! String
+                let tid = args![SwiftDsmPlugin.TID] as! Int32
+                let dsm = dsmCache[dsmId]
+                result(dsm?.treeDisconnect(tid))
+            }
             break
         case "DSM_find":
-            result(nil)
+            if (args == nil ||
+                args?[SwiftDsmPlugin.ID] == nil ||
+                args?[SwiftDsmPlugin.TID] == nil ||
+                args?[SwiftDsmPlugin.PATTERN] == nil
+                ) {
+                result(FlutterError(code: "PARAM_ERROR", message: "Illegal parameter", details: nil))
+                break
+            } else {
+                let dsmId = args![SwiftDsmPlugin.ID] as! String
+                let tid = args![SwiftDsmPlugin.TID] as! Int32
+                let pattern = args![SwiftDsmPlugin.PATTERN] as! String
+                let dsm = dsmCache[dsmId]
+                result(dsm?.find(tid, pattern))
+            }
             break
         case "DSM_file_status":
-            result(nil)
+            if (args == nil ||
+                args?[SwiftDsmPlugin.ID] == nil ||
+                args?[SwiftDsmPlugin.TID] == nil ||
+                args?[SwiftDsmPlugin.PATH] == nil
+                ) {
+                result(FlutterError(code: "PARAM_ERROR", message: "Illegal parameter", details: nil))
+                break
+            } else {
+                let dsmId = args![SwiftDsmPlugin.ID] as! String
+                let tid = args![SwiftDsmPlugin.TID] as! Int32
+                let path = args![SwiftDsmPlugin.PATH] as! String
+                let dsm = dsmCache[dsmId]
+                result(dsm?.fileStatus(tid, path))
+            }
             break
         default:
             result(FlutterMethodNotImplemented)
@@ -92,11 +206,56 @@ public class SwiftDsmPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
         
     }
     
+    var _eventSink : FlutterEventSink? = nil
+    
     public func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
+        
+        NSLog("events = \(String(describing: events)) arguments = \(String(describing: arguments))")
+        
+        if (arguments == nil) {
+            events(FlutterError.init(code: "PARAM_ERROR", message: "Illegal parameter", details: nil))
+        } else {
+            let dsmId = arguments as! String
+            let dsm = dsmCache[dsmId]
+            dsm?.discoveryListener = self
+            _eventSink = events
+        }
         return nil
     }
     
     public func onCancel(withArguments arguments: Any?) -> FlutterError? {
+        if (arguments != nil) {
+            let dsmId = arguments as! String
+            let dsm = dsmCache[dsmId]
+            dsm?.discoveryListener = nil
+            _eventSink = nil
+        }
         return nil
     }
+    
+    public func onEntryAdded(json: String) {
+        let result = convertToDictionary(text: json) ?? [:]
+        let dic = ["type":"0", "result": result] as [String : Any]
+        let jsonData = try! JSONSerialization.data(withJSONObject: dic)
+        _eventSink?(String(data: jsonData, encoding: .utf8))
+    }
+    
+    public func onEntryRemoved(json: String) {
+        let result = convertToDictionary(text: json) ?? [:]
+        let dic = ["type":"1", "result":result ] as [String : Any]
+        let jsonData = try! JSONSerialization.data(withJSONObject: dic)
+        _eventSink?(String(data: jsonData, encoding: .utf8))
+    }
+    
+    func convertToDictionary(text: String) -> [String: Any]? {
+        if let data = text.data(using: .utf8) {
+            do {
+                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            } catch {
+                
+            }
+        }
+        return nil
+    }
+    
 }
