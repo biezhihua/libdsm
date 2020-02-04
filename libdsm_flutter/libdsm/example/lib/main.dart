@@ -1,9 +1,6 @@
-import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
-import 'package:libdsm/libdsm.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:libdsm/libdsm.dart';
 
 void main() => runApp(MyApp());
 
@@ -31,7 +28,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _discoveryListener(String json) async {
-      debugPrint('Discovery : $json');
+    debugPrint('Discovery : $json');
   }
 
   void _stopDiscovery() async {
