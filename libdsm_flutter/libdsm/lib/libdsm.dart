@@ -13,6 +13,7 @@ class Dsm {
 
   String _dsmId;
 
+  /// dsm instance uuid
   String get dsmId => _dsmId;
 
   MethodChannel _methodChannel;
@@ -24,6 +25,7 @@ class Dsm {
     _eventChannel = const EventChannel('open.flutter/discovery_listener');
   }
 
+  /// discovery change notify
   Stream<String> get onDiscoveryChanged {
     if (_discoveryListener == null) {
       _discoveryListener =
