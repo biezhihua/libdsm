@@ -26,11 +26,7 @@ public class SwiftDsmPlugin: NSObject, FlutterPlugin, FlutterStreamHandler,Disco
     }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
-        //        call.method = DSM_release call.arguments = Optional({
-        //            id = "51CDB8F3-5DA0-466A-A6E2-22198AE4D4D1";
-        //        })
-        
+
         let args = call.arguments as? [String:Any]
         
         NSLog("call.method = \(call.method) call.arguments = \(String(describing: args))")
@@ -84,7 +80,13 @@ public class SwiftDsmPlugin: NSObject, FlutterPlugin, FlutterStreamHandler,Disco
                 let dsmId = args![SwiftDsmPlugin.ID] as! String
                 let name = args![SwiftDsmPlugin.NAME] as! String
                 let dsm = dsmCache[dsmId]
-                result(dsm?.resolve(name))
+                
+                DispatchQueue.global().async(){
+                    let address = dsm?.resolve(name)
+                    DispatchQueue.main.async {
+                        result(address)
+                    }
+                }
             }
             break
         case "DSM_inverse":
@@ -95,7 +97,13 @@ public class SwiftDsmPlugin: NSObject, FlutterPlugin, FlutterStreamHandler,Disco
                 let dsmId = args![SwiftDsmPlugin.ID] as! String
                 let address = args![SwiftDsmPlugin.ADDRESS] as! String
                 let dsm = dsmCache[dsmId]
-                result(dsm?.inverse(address))
+                
+                DispatchQueue.global().async(){
+                    let name = dsm?.inverse(address)
+                    DispatchQueue.main.async {
+                        result(name)
+                    }
+                }
             }
             break
         case "DSM_login":
@@ -113,7 +121,13 @@ public class SwiftDsmPlugin: NSObject, FlutterPlugin, FlutterStreamHandler,Disco
                 let loginName = args![SwiftDsmPlugin.LOGIN_NAME] as! String
                 let password = args![SwiftDsmPlugin.PASSWORD] as! String
                 let dsm = dsmCache[dsmId]
-                result(dsm?.login(host, loginName, password))
+                
+                DispatchQueue.global().async(){
+                    let loginResult = dsm?.login(host, loginName, password)
+                    DispatchQueue.main.async {
+                        result(loginResult)
+                    }
+                }
             }
             break
         case "DSM_logout":
@@ -126,6 +140,13 @@ public class SwiftDsmPlugin: NSObject, FlutterPlugin, FlutterStreamHandler,Disco
                 let dsmId = args![SwiftDsmPlugin.ID] as! String
                 let dsm = dsmCache[dsmId]
                 result(dsm?.logout())
+                
+                DispatchQueue.global().async(){
+                    let logoutResult = dsm?.logout()
+                    DispatchQueue.main.async {
+                        result(logoutResult)
+                    }
+                }
             }
             break
         case "DSM_get_share_list":
@@ -137,7 +158,13 @@ public class SwiftDsmPlugin: NSObject, FlutterPlugin, FlutterStreamHandler,Disco
             } else {
                 let dsmId = args![SwiftDsmPlugin.ID] as! String
                 let dsm = dsmCache[dsmId]
-                result(dsm?.getShareList())
+                
+                DispatchQueue.global().async(){
+                    let shareListResult = dsm?.getShareList()
+                    DispatchQueue.main.async {
+                        result(shareListResult)
+                    }
+                }
             }
             break
         case "DSM_tree_connect":
@@ -151,7 +178,13 @@ public class SwiftDsmPlugin: NSObject, FlutterPlugin, FlutterStreamHandler,Disco
                 let dsmId = args![SwiftDsmPlugin.ID] as! String
                 let name = args![SwiftDsmPlugin.NAME] as! String
                 let dsm = dsmCache[dsmId]
-                result(dsm?.treeConnect(name))
+                
+                DispatchQueue.global().async(){
+                    let executeResult = dsm?.treeConnect(name)
+                    DispatchQueue.main.async {
+                        result(executeResult)
+                    }
+                }
             }
             break
         case "DSM_tree_disconnect":
@@ -165,7 +198,13 @@ public class SwiftDsmPlugin: NSObject, FlutterPlugin, FlutterStreamHandler,Disco
                 let dsmId = args![SwiftDsmPlugin.ID] as! String
                 let tid = args![SwiftDsmPlugin.TID] as! Int32
                 let dsm = dsmCache[dsmId]
-                result(dsm?.treeDisconnect(tid))
+                
+                DispatchQueue.global().async(){
+                    let executeResult = dsm?.treeDisconnect(tid)
+                    DispatchQueue.main.async {
+                        result(executeResult)
+                    }
+                }
             }
             break
         case "DSM_find":
@@ -181,7 +220,13 @@ public class SwiftDsmPlugin: NSObject, FlutterPlugin, FlutterStreamHandler,Disco
                 let tid = args![SwiftDsmPlugin.TID] as! Int32
                 let pattern = args![SwiftDsmPlugin.PATTERN] as! String
                 let dsm = dsmCache[dsmId]
-                result(dsm?.find(tid, pattern))
+                
+                DispatchQueue.global().async(){
+                    let executeResult = dsm?.find(tid, pattern)
+                    DispatchQueue.main.async {
+                        result(executeResult)
+                    }
+                }
             }
             break
         case "DSM_file_status":
@@ -197,7 +242,13 @@ public class SwiftDsmPlugin: NSObject, FlutterPlugin, FlutterStreamHandler,Disco
                 let tid = args![SwiftDsmPlugin.TID] as! Int32
                 let path = args![SwiftDsmPlugin.PATH] as! String
                 let dsm = dsmCache[dsmId]
-                result(dsm?.fileStatus(tid, path))
+                
+                DispatchQueue.global().async(){
+                    let executeResult = dsm?.fileStatus(tid, path)
+                    DispatchQueue.main.async {
+                        result(executeResult)
+                    }
+                }
             }
             break
         default:

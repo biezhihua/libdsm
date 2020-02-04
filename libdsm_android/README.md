@@ -8,7 +8,7 @@ An Android(Kotlin) wrapper for the libdsm library
 
 
 ```
-compile 'open.android.lib.dsm:libdsm:1.1.0'
+compile 'open.android.lib.dsm:libdsm:1.1.4'
 ```
 
 # Dependence Library
