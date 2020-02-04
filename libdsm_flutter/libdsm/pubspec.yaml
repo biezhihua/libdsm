@@ -1,8 +1,7 @@
 name: libdsm
-description: A new flutter plugin project.
+description: An all platform wrapper for the libdsm(Defective SMB) library https://videolabs.github.io/libdsm/
 version: 0.0.1
-author:
-homepage:
+homepage: https://github.com/biezhihua/libdsm
 
 environment:
   sdk: ">=2.1.0 <3.0.0"

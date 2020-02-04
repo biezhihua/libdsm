@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class Dsm {
@@ -9,7 +9,9 @@ class Dsm {
 
   static const int EVENT_ENTRY_REMOVE = 1;
 
-  String _dsmId = null;
+  String _dsmId;
+
+  String get dsmId => _dsmId;
 
   MethodChannel _methodChannel;
   EventChannel _eventChannel;
