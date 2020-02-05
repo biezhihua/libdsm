@@ -1,111 +1,149 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:libdsm/libdsm.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  Dsm dsm = Dsm();
+
+  void _create() async {
+    await dsm.init();
+  }
+
+  void _release() async {
+    await dsm.release();
+  }
+
+  void _startDiscovery() async {
+    dsm.onDiscoveryChanged.listen(_discoveryListener);
+    await dsm.startDiscovery();
+  }
+
+  void _discoveryListener(String json) async {
+    debugPrint('Discovery : $json');
+  }
+
+  void _stopDiscovery() async {
+    dsm.onDiscoveryChanged.listen(null);
+    await dsm.stopDiscovery();
+  }
+
+  void _resolve() async {
+    String name = 'biezhihua';
+    await dsm.resolve(name);
+  }
+
+  void _inverse() async {
+    String address = '192.168.1.1';
+    await dsm.inverse(address);
+  }
+
+  void _login() async {
+    await dsm.login("BIEZHIHUA-PC", "test", "test");
+  }
+
+  void _logout() async {
+    await dsm.logout();
+  }
+
+  void _getShareList() async {
+    await dsm.getShareList();
+  }
+
+  int tid = 0;
+
+  void _treeConnect() async {
+    tid = await dsm.treeConnect("F");
+  }
+
+  void _treeDisconnect() async {
+    int result = await dsm.treeDisconnect(tid);
+    tid = 0;
+  }
+
+  void _find() async {
+    String result = await dsm.find(tid, "\\*");
+
+    result = await dsm.find(tid, "\\splayer\\splayer_soundtouch\\*");
+  }
+
+  void _fileStatus() async {
+    String result =
+        await dsm.fileStatus(tid, "\\splayer\\splayer_soundtouch\\Test.cpp");
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Flutter Libdsm example'),
+        ),
+        body: Column(
+          // <Widget> is the type of items in the list.
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+            RaisedButton(
+              onPressed: _create,
+              child: Text('create'),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
+            RaisedButton(
+              onPressed: _release,
+              child: Text('release'),
+            ),
+            RaisedButton(
+              onPressed: _startDiscovery,
+              child: Text('startDiscovery'),
+            ),
+            RaisedButton(
+              onPressed: _stopDiscovery,
+              child: Text('stopDiscovery'),
+            ),
+            RaisedButton(
+              onPressed: _resolve,
+              child: Text('resolve'),
+            ),
+            RaisedButton(
+              onPressed: _inverse,
+              child: Text('inverse'),
+            ),
+            RaisedButton(
+              onPressed: _login,
+              child: Text('login'),
+            ),
+            RaisedButton(
+              onPressed: _logout,
+              child: Text('logout'),
+            ),
+            RaisedButton(
+              onPressed: _getShareList,
+              child: Text('getShareList'),
+            ),
+            RaisedButton(
+              onPressed: _treeConnect,
+              child: Text('treeConnect'),
+            ),
+            RaisedButton(
+              onPressed: _treeDisconnect,
+              child: Text('treeDisconnect'),
+            ),
+            RaisedButton(
+              onPressed: _find,
+              child: Text('find'),
+            ),
+            RaisedButton(
+              onPressed: _fileStatus,
+              child: Text('fileStatus'),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
