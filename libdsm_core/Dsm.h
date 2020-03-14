@@ -1,11 +1,11 @@
-#ifndef ANDROID_LIB_DSM_H
-#define ANDROID_LIB_DSM_H
+#ifndef CORE_LIB_DSM_H
+#define CORE_LIB_DSM_H
 
 #include <string>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <assert.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <cassert>
 #include "nlohmann/json.h"
 #include <arpa/inet.h>
 
