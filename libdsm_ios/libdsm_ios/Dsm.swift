@@ -6,18 +6,21 @@ import dsm_birdge;
  */
 public class Dsm {
 
+    private class DsmHolder {
+
+        //
+        fileprivate var dsm: Dsm? = nil
+    }
+
     private static let TAG = "[DSM][SWIFT]"
 
     public static let EVENT_TYPE_ON_DISCOVERY_ADD: Int32 = 0;
+
     public static let EVENT_TYPE_ON_DISCOVERY_REMOVE: Int32 = 1;
 
-    public class DsmSelf {
-        var dsm: Dsm? = nil
-    }
+    private var dsmHolder: DsmHolder = DsmHolder()
 
-    private var dsmSelf: DsmSelf = DsmSelf()
-
-    var dsmNative: Int64 = 0
+    private var dsmNativePointer: Int64 = 0
 
     public var discoveryListener: DiscoveryListener? = nil
 
@@ -25,11 +28,13 @@ public class Dsm {
 
         // static method from native
         DSM_onEventFromNative = { (dsmSelf: UnsafeMutableRawPointer, what: Int32, json: UnsafePointer<Int8>?) -> Void in
-            let dsmRawSelf = dsmSelf.load(as: DsmSelf.self)
+            let dsmRawSelf = dsmSelf.load(as: DsmHolder.self)
             dsmRawSelf.dsm?.onEventFromNative(what, json != nil ? String(cString: json!) : "")
         }
 
-        dsmSelf.dsm = self
+        // Save dsm reference
+        dsmHolder.dsm = self
+
         dsmInit()
     }
 
@@ -53,18 +58,19 @@ public class Dsm {
      * Initialize the library, set environment variables, and bind C ++ object to Java object.
      */
     public func dsmInit() -> Void {
-        DSM_init(UnsafeMutableRawPointer(&dsmSelf), &dsmNative)
+        DSM_init(UnsafeMutableRawPointer(&dsmHolder), &dsmNativePointer)
     }
 
     /*
      * Release the library and unbind the binding relationship, otherwise it may cause a memory leak.
      */
     public func dsmRelease() -> Void {
-        DSM_release(UnsafeMutableRawPointer(&dsmSelf), &dsmNative)
+        DSM_release(UnsafeMutableRawPointer(&dsmHolder), &dsmNativePointer)
     }
 
     deinit {
-        dsmSelf.dsm = nil
+        // Release dsm holder reference
+        dsmHolder.dsm = nil
         dsmRelease()
     }
 
@@ -73,14 +79,14 @@ public class Dsm {
      * When any SMB server is found or when the SMB server is disappears, a callback notification will be generated.
      */
     public func startDiscovery(_ timeOut: Int32 = 4) {
-        DSM_startDiscovery(UnsafeMutableRawPointer(&dsmSelf), &dsmNative, timeOut);
+        DSM_startDiscovery(UnsafeMutableRawPointer(&dsmHolder), &dsmNativePointer, timeOut);
     }
 
     /*
      * Stop discovering SMB servers in the LAN.
      */
     public func stopDiscovery() {
-        DSM_stopDiscovery(UnsafeMutableRawPointer(&dsmSelf), &dsmNative)
+        DSM_stopDiscovery(UnsafeMutableRawPointer(&dsmHolder), &dsmNativePointer)
     }
 
     /*
@@ -90,7 +96,7 @@ public class Dsm {
      * given type on the LAN, using broadcast queries. No WINS server is called.
      */
     public func resolve(_ name: String) -> String {
-        let result: UnsafePointer<Int8>? = DSM_resolve(UnsafeMutableRawPointer(&dsmSelf), &dsmNative, name)
+        let result: UnsafePointer<Int8>? = DSM_resolve(UnsafeMutableRawPointer(&dsmHolder), &dsmNativePointer, name)
         if (result != nil) {
             let address = String(cString: result!)
             return address
@@ -106,7 +112,7 @@ public class Dsm {
      * the <20> or <0> name)
      */
     public func inverse(_ address: String) -> String {
-        let result: UnsafePointer<Int8>? = DSM_inverse(UnsafeMutableRawPointer(&dsmSelf), &dsmNative, address)
+        let result: UnsafePointer<Int8>? = DSM_inverse(UnsafeMutableRawPointer(&dsmHolder), &dsmNativePointer, address)
         if (result != nil) {
             let name = String(cString: result!)
             return name
@@ -118,7 +124,7 @@ public class Dsm {
      * Login to an SMB server, if login fails, it will try to log in again with Gust identity.
      */
     public func login(_ host: String, _  loginName: String, _  password: String) -> Int32 {
-        return DSM_login(UnsafeMutableRawPointer(&dsmSelf), &dsmNative, host, loginName, password)
+        return DSM_login(UnsafeMutableRawPointer(&dsmHolder), &dsmNativePointer, host, loginName, password)
     }
 
     /*
@@ -127,7 +133,7 @@ public class Dsm {
      * @return 0 = SUCCESS OR ERROR
      */
     public func logout() -> Int32 {
-        return DSM_logout(UnsafeMutableRawPointer(&dsmSelf), &dsmNative)
+        return DSM_logout(UnsafeMutableRawPointer(&dsmHolder), &dsmNativePointer)
     }
 
     /*
@@ -140,7 +146,7 @@ public class Dsm {
      * @return An a json list.
      */
     public func getShareList() -> String {
-        let result: UnsafePointer<Int8>? = DSM_shareGetListJson(UnsafeMutableRawPointer(&dsmSelf), &dsmNative)
+        let result: UnsafePointer<Int8>? = DSM_shareGetListJson(UnsafeMutableRawPointer(&dsmHolder), &dsmNativePointer)
         if (result != nil) {
             let shareList = String(cString: result!)
             return shareList
@@ -159,7 +165,7 @@ public class Dsm {
      * @return tid
      */
     public func treeConnect(_ name: String) -> Int32 {
-        return DSM_treeConnect(UnsafeMutableRawPointer(&dsmSelf), &dsmNative, name);
+        return DSM_treeConnect(UnsafeMutableRawPointer(&dsmHolder), &dsmNativePointer, name);
     }
 
     /*
@@ -168,7 +174,7 @@ public class Dsm {
      * @return 0 on success or a DSM error code in case of error
      */
     public func treeDisconnect(_ tid: Int32) -> Int32 {
-        return DSM_treeDisconnect(UnsafeMutableRawPointer(&dsmSelf), &dsmNative, tid);
+        return DSM_treeDisconnect(UnsafeMutableRawPointer(&dsmHolder), &dsmNativePointer, tid);
     }
 
     /*
@@ -184,7 +190,7 @@ public class Dsm {
      * @return An json list of files.
      */
     public func find(_ tid: Int32, _  pattern: String) -> String {
-        let result: UnsafePointer<Int8>? = DSM_find(UnsafeMutableRawPointer(&dsmSelf), &dsmNative, tid, pattern)
+        let result: UnsafePointer<Int8>? = DSM_find(UnsafeMutableRawPointer(&dsmHolder), &dsmNativePointer, tid, pattern)
         if (result != nil) {
             let files = String(cString: result!)
             return files
@@ -202,7 +208,7 @@ public class Dsm {
      * destory this object with smb_stat_destroy after usage.
      */
     public func fileStatus(_ tid: Int32, _  path: String) -> String {
-        let result: UnsafePointer<Int8>? = DSM_fileStatus(UnsafeMutableRawPointer(&dsmSelf), &dsmNative, tid, path)
+        let result: UnsafePointer<Int8>? = DSM_fileStatus(UnsafeMutableRawPointer(&dsmHolder), &dsmNativePointer, tid, path)
         if (result != nil) {
             let fileStatus = String(cString: result!)
             return fileStatus

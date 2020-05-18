@@ -8,12 +8,12 @@ using json = nlohmann::json;
 static int EVENT_TYPE_ON_DISCOVERY_ADD = 0;
 static int EVENT_TYPE_ON_DISCOVERY_REMOVE = 1;
 
-void (*_Nonnull DSM_onEventFromNative)(_DsmSelf *_Nonnull dsmSelf, int what, const char *_Nullable json) = nullptr;
+void (*_Nonnull DSM_onEventFromNative)(_DsmHolder *_Nonnull dsmSelf, int what, const char *_Nullable json) = nullptr;
 
 class BirdgeDsm : public Dsm {
 
 public:
-    _DsmSelf *_dsmSelf = nullptr;
+    _DsmHolder *_dsmSelf = nullptr;
     OnEventFromNative onEvent = nullptr;
 
 private:
@@ -33,7 +33,7 @@ private:
 
 };
 
-static BirdgeDsm *getBirdgeDsm(_DsmSelf *_Nullable dsmSelf, _DsmNative *_Nullable dsmNative) {
+static BirdgeDsm *getBirdgeDsm(_DsmHolder *_Nullable dsmSelf, _DsmNative *_Nullable dsmNative) {
     if (dsmSelf != nullptr && dsmNative != nullptr && *dsmNative != 0) {
         return (BirdgeDsm *) *dsmNative;
     }
@@ -42,7 +42,7 @@ static BirdgeDsm *getBirdgeDsm(_DsmSelf *_Nullable dsmSelf, _DsmNative *_Nullabl
 }
 
 
-static BirdgeDsm *setBirdgeDsm(_DsmSelf *_Nullable dsmSelf, _DsmNative *_Nullable dsmNative, long dsm) {
+static BirdgeDsm *setBirdgeDsm(_DsmHolder *_Nullable dsmSelf, _DsmNative *_Nullable dsmNative, long dsm) {
     BirdgeDsm *old = getBirdgeDsm(dsmSelf, dsmNative);
     if (dsmSelf != nullptr && dsmNative != nullptr) {
         *dsmNative = dsm;
@@ -51,7 +51,7 @@ static BirdgeDsm *setBirdgeDsm(_DsmSelf *_Nullable dsmSelf, _DsmNative *_Nullabl
 }
 
 void DSM_init(
-        _DsmSelf *_Nullable dsmSelf,
+        _DsmHolder *_Nullable dsmSelf,
         _DsmNative *_Nullable dsmNative
 ) {
     BirdgeDsm *dsm = getBirdgeDsm(dsmSelf, dsmNative);
@@ -72,16 +72,16 @@ void DSM_init(
 
 
 void DSM_release(
-        _DsmSelf *_Nullable dsmSelf,
+        _DsmHolder *_Nullable dsmHolder,
         _DsmNative *_Nullable dsmNative
 ) {
-    BirdgeDsm *dsm = getBirdgeDsm(dsmSelf, dsmNative);
+    BirdgeDsm *dsm = getBirdgeDsm(dsmHolder, dsmNative);
     if (dsm != nullptr) {
         dsm->_dsmSelf = nullptr;
         dsm->onEvent = nullptr;
-        setBirdgeDsm(dsmSelf, dsmNative, 0);
+        setBirdgeDsm(dsmHolder, dsmNative, 0);
         dsm = nullptr;
-        dsmSelf = nullptr;
+        dsmHolder = nullptr;
         dsmNative = nullptr;
         delete dsm;
         LOGD("[%s] Destroyed", __func__);
@@ -91,11 +91,11 @@ void DSM_release(
 }
 
 void DSM_startDiscovery(
-        _DsmSelf *_Nullable dsmSelf,
+        _DsmHolder *_Nullable dsmHolder,
         _DsmNative *_Nullable dsmNative,
         int timeout
 ) {
-    BirdgeDsm *dsm = getBirdgeDsm(dsmSelf, dsmNative);
+    BirdgeDsm *dsm = getBirdgeDsm(dsmHolder, dsmNative);
     if (dsm != nullptr) {
         if (timeout >= 0) {
             int result = dsm->startDiscovery((unsigned int) (timeout));
@@ -113,10 +113,10 @@ void DSM_startDiscovery(
 }
 
 void DSM_stopDiscovery(
-        _DsmSelf *_Nullable dsmSelf,
+        _DsmHolder *_Nullable dsmHolder,
         _DsmNative *_Nullable dsmNative
 ) {
-    BirdgeDsm *dsm = getBirdgeDsm(dsmSelf, dsmNative);
+    BirdgeDsm *dsm = getBirdgeDsm(dsmHolder, dsmNative);
     if (dsm != nullptr) {
         int result = dsm->stopDiscovery();
         if (result == 0) {
@@ -130,11 +130,11 @@ void DSM_stopDiscovery(
 }
 
 const char *_Nullable DSM_resolve(
-        _DsmSelf *_Nullable dsmSelf,
+        _DsmHolder *_Nullable dsmHolder,
         _DsmNative *_Nullable dsmNative,
         const char *_Nullable name
 ) {
-    BirdgeDsm *dsm = getBirdgeDsm(dsmSelf, dsmNative);
+    BirdgeDsm *dsm = getBirdgeDsm(dsmHolder, dsmNative);
     if (dsm != nullptr) {
         const char *result = dsm->resolve(name);
         if (result == nullptr) {
@@ -149,11 +149,11 @@ const char *_Nullable DSM_resolve(
 }
 
 const char *_Nullable DSM_inverse(
-        _DsmSelf *_Nullable dsmSelf,
+        _DsmHolder *_Nullable dsmHolder,
         _DsmNative *_Nullable dsmNative,
         const char *_Nullable address
 ) {
-    BirdgeDsm *dsm = getBirdgeDsm(dsmSelf, dsmNative);
+    BirdgeDsm *dsm = getBirdgeDsm(dsmHolder, dsmNative);
     if (dsm != nullptr) {
         const char *result = dsm->inverse(address);
         if (result == nullptr) {
@@ -168,13 +168,13 @@ const char *_Nullable DSM_inverse(
 }
 
 int DSM_login(
-        _DsmSelf *_Nullable dsmSelf,
+        _DsmHolder *_Nullable dsmHolder,
         _DsmNative *_Nullable dsmNative,
         const char *_Nullable host,
         const char *_Nullable loginName,
         const char *_Nullable password
 ) {
-    BirdgeDsm *dsm = getBirdgeDsm(dsmSelf, dsmNative);
+    BirdgeDsm *dsm = getBirdgeDsm(dsmHolder, dsmNative);
     if (dsm != nullptr) {
         return dsm->login(host, loginName, password);
     }
@@ -183,10 +183,10 @@ int DSM_login(
 }
 
 int DSM_logout(
-        _DsmSelf *_Nullable dsmSelf,
+        _DsmHolder *_Nullable dsmHolder,
         _DsmNative *_Nullable dsmNative
 ) {
-    BirdgeDsm *dsm = getBirdgeDsm(dsmSelf, dsmNative);
+    BirdgeDsm *dsm = getBirdgeDsm(dsmHolder, dsmNative);
     if (dsm != nullptr) {
         int result = dsm->logout();
         return result;
@@ -196,11 +196,11 @@ int DSM_logout(
 }
 
 const char *_Nullable DSM_shareGetListJson(
-        _DsmSelf *_Nullable dsmSelf,
+        _DsmHolder *_Nullable dsmHolder,
         _DsmNative *_Nullable dsmNative
 ) {
 
-    BirdgeDsm *dsm = getBirdgeDsm(dsmSelf, dsmNative);
+    BirdgeDsm *dsm = getBirdgeDsm(dsmHolder, dsmNative);
     if (dsm != nullptr) {
         string *json = dsm->shareGetList();
         if (json == nullptr) {
@@ -217,11 +217,11 @@ const char *_Nullable DSM_shareGetListJson(
 }
 
 int DSM_treeConnect(
-        _DsmSelf *_Nullable dsmSelf,
+        _DsmHolder *_Nullable dsmHolder,
         _DsmNative *_Nullable dsmNative,
         const char *_Nullable name
 ) {
-    BirdgeDsm *dsm = getBirdgeDsm(dsmSelf, dsmNative);
+    BirdgeDsm *dsm = getBirdgeDsm(dsmHolder, dsmNative);
     if (dsm != nullptr) {
         int tid = dsm->treeConnect(name);
         return tid;
@@ -231,10 +231,10 @@ int DSM_treeConnect(
 }
 
 int DSM_treeDisconnect(
-        _DsmSelf *_Nullable dsmSelf,
+        _DsmHolder *_Nullable dsmHolder,
         _DsmNative *_Nullable dsmNative, int tid
 ) {
-    BirdgeDsm *dsm = getBirdgeDsm(dsmSelf, dsmNative);
+    BirdgeDsm *dsm = getBirdgeDsm(dsmHolder, dsmNative);
     if (dsm != nullptr) {
         return dsm->treeDisconnect(tid);
     }
@@ -243,12 +243,12 @@ int DSM_treeDisconnect(
 }
 
 const char *_Nullable DSM_find(
-        _DsmSelf *_Nullable dsmSelf,
+        _DsmHolder *_Nullable dsmHolder,
         _DsmNative *_Nullable dsmNative,
         int tid,
         const char *_Nullable pattern
 ) {
-    BirdgeDsm *dsm = getBirdgeDsm(dsmSelf, dsmNative);
+    BirdgeDsm *dsm = getBirdgeDsm(dsmHolder, dsmNative);
     if (dsm != nullptr) {
         string *json = dsm->find(tid, pattern);
         if (json == nullptr) {
@@ -265,13 +265,13 @@ const char *_Nullable DSM_find(
 }
 
 const char *_Nullable DSM_fileStatus(
-        _DsmSelf *_Nullable dsmSelf,
+        _DsmHolder *_Nullable dsmHolder,
         _DsmNative *_Nullable dsmNative,
         int tid,
         const char *_Nullable path
 ) {
 
-    BirdgeDsm *dsm = getBirdgeDsm(dsmSelf, dsmNative);
+    BirdgeDsm *dsm = getBirdgeDsm(dsmHolder, dsmNative);
     if (dsm != nullptr) {
         string *json = dsm->fileStatus(tid, path);
         if (json == nullptr) {
