@@ -347,7 +347,7 @@ static const JNINativeMethod gMethods[] = {
         {"_fileStatus",       "(Ljava/lang/Object;ILjava/lang/String;)Ljava/lang/String;",                   (void *) DSM_fileStatus},
 };
 
-static int registerMediaPlayerMethod(JNIEnv *env) {
+static int registerDsmMethod(JNIEnv *env) {
     int numMethods = (sizeof(gMethods) / sizeof((gMethods)[0]));
     jclass clazz = env->FindClass(CLASS_NAME);
     if (clazz == nullptr) {
@@ -368,7 +368,7 @@ extern "C" JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
     if (vm->GetEnv((void **) &env, JNI_VERSION_1_6) != JNI_OK) {
         return -1;
     }
-    if (registerMediaPlayerMethod(env) != JNI_OK) {
+    if (registerDsmMethod(env) != JNI_OK) {
         return -1;
     }
     return JNI_VERSION_1_4;
