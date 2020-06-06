@@ -141,3 +141,6 @@ fun queryFileStatusFromSmbServer() {
     dsm.release()
 }
 ```
+
+# Other
+- https://developer.android.com/training/articles/perf-jni?hl=zh_cn
