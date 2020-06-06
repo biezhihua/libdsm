@@ -14,23 +14,28 @@ public class Dsm {
 
     private static let TAG = "[DSM][SWIFT]"
 
+    // Called when an SMB device is found
     public static let EVENT_TYPE_ON_DISCOVERY_ADD: Int32 = 0;
 
+    // Called when an SMB device is removed
     public static let EVENT_TYPE_ON_DISCOVERY_REMOVE: Int32 = 1;
 
+    // Dsm object holder
     private var dsmHolder: DsmHolder = DsmHolder()
 
+    // Native pointer to DSM object
     private var dsmNativePointer: Int64 = 0
 
     public var discoveryListener: DiscoveryListener? = nil
 
     public init() {
 
-        // static method from native
-        DSM_onEventFromNative = { (dsmSelf: UnsafeMutableRawPointer, what: Int32, json: UnsafePointer<Int8>?) -> Void in
-            let dsmRawSelf = dsmSelf.load(as: DsmHolder.self)
-            dsmRawSelf.dsm?.onEventFromNative(what, json != nil ? String(cString: json!) : "")
-        }
+        // Register a callback method for static communication
+        // Converts static communication to object communication
+DSM_onEventFromNative = { (dsmSelf: UnsafeMutableRawPointer, what: Int32, json: UnsafePointer<Int8>?) -> Void in
+    let dsmRawSelf = dsmSelf.load(as: DsmHolder.self)
+    dsmRawSelf.dsm?.onEventFromNative(what, json != nil ? String(cString: json!) : "")
+}
 
         // Save dsm reference
         dsmHolder.dsm = self
@@ -55,7 +60,7 @@ public class Dsm {
     }
 
     /*
-     * Initialize the library, set environment variables, and bind C ++ object to Java object.
+     * Initialize the library, set environment variables, and bind C ++ object to Swift object.
      */
     public func dsmInit() -> Void {
         DSM_init(UnsafeMutableRawPointer(&dsmHolder), &dsmNativePointer)
