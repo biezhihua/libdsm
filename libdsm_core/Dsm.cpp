@@ -130,7 +130,7 @@ const char *Dsm::inverse(const char *address) {
 int Dsm::login(const char *host, const char *loginName, const char *password) {
     if (host == nullptr || loginName == nullptr || password == nullptr) {
         LOGE("[%s] Params invalid host=%s loginName=%s password=%s", __func__, host, loginName,
-                password);
+             password);
         return DSM_ERROR;
     }
     if (loginNS != nullptr && session != nullptr) {
@@ -148,7 +148,7 @@ int Dsm::login(const char *host, const char *loginName, const char *password) {
         return DSM_ERROR;
     }
     if (smb_session_connect(session,
-            host, addr.sin_addr.s_addr, SMB_TRANSPORT_TCP) == DSM_SUCCESS) {
+                            host, addr.sin_addr.s_addr, SMB_TRANSPORT_TCP) == DSM_SUCCESS) {
         LOGD("[%s] Successfully connected to %s ", __func__, host);
     } else {
         LOGD("[%s] Unable to connect to %s ", __func__, host);
@@ -283,9 +283,28 @@ string *Dsm::find(int tid, const char *pattern) {
             break;
         }
         json file;
+
+        // name
         file["name"] = smb_stat_name(st);
+
+        // 0 -> not a directory, != 0 -> directory
         file["is_dir"] = (smb_stat_get(st, SMB_STAT_ISDIR) != 0 ? 1 : 0);
+
+        // Get file size
         file["size"] = smb_stat_get(st, SMB_STAT_SIZE);
+
+        // Get file creation time
+        file["creation_time"] = smb_stat_get(st, SMB_STAT_CTIME);
+
+        // Get file last access time
+        file["last_access_time"] = smb_stat_get(st, SMB_STAT_ATIME);
+
+        // Get file last write time
+        file["last_write_time"] = smb_stat_get(st, SMB_STAT_WTIME);
+
+        // Get file last moditification time
+        file["last_moditification_time"] = smb_stat_get(st, SMB_STAT_MTIME);
+
         data.push_back(file);
     }
 
@@ -309,17 +328,36 @@ string *Dsm::fileStatus(int tid, const char *path) {
         return nullptr;
     }
     smb_tid smbTid = (smb_tid) (tid);
-    smb_stat stat = smb_fstat(session, smbTid, path);
+    smb_stat st = smb_fstat(session, smbTid, path);
 
     json result;
     json data = json::array();
 
     json file;
-    file["name"] = smb_stat_name(stat);
-    file["is_dir"] = (smb_stat_get(stat, SMB_STAT_ISDIR) != 0 ? 1 : 0);
-    file["size"] = smb_stat_get(stat, SMB_STAT_SIZE);
+
+    // name
+    file["name"] = smb_stat_name(st);
+
+    // 0 -> not a directory, != 0 -> directory
+    file["is_dir"] = (smb_stat_get(st, SMB_STAT_ISDIR) != 0 ? 1 : 0);
+
+    // Get file size
+    file["size"] = smb_stat_get(st, SMB_STAT_SIZE);
+
+    // Get file creation time
+    file["creation_time"] = smb_stat_get(st, SMB_STAT_CTIME);
+
+    // Get file last access time
+    file["last_access_time"] = smb_stat_get(st, SMB_STAT_ATIME);
+
+    // Get file last write time
+    file["last_write_time"] = smb_stat_get(st, SMB_STAT_WTIME);
+
+    // Get file last moditification time
+    file["last_moditification_time"] = smb_stat_get(st, SMB_STAT_MTIME);
+
     data.push_back(file);
-    smb_stat_destroy(stat);
+    smb_stat_destroy(st);
 
     result["data"] = data;
     return new string(result.dump().c_str());
