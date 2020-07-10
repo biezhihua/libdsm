@@ -1,17 +1,17 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
+//apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 buildscript {
-    ext.kotlin_version = '1.3.61'
+    ext.kotlin_version = '1.3.72'
     repositories {
         google()
         jcenter()
 
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.android.tools.build:gradle:4.0.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.novoda:bintray-release:0.9.2'
     }
@@ -84,15 +84,15 @@ dependencies {
     testImplementation 'junit:junit:4.13'
 }
 
-publish {
-
-    userOrg = 'biezhihua-open'
-    repoName = 'android'
-    groupId = 'open.android.lib.dsm'
-    artifactId = 'libdsm'
-    publishVersion = '1.1.4'
-    desc = 'An Android wrapper for the libdsm'
-    website = 'https://github.com/biezhihua/android_libdsm'
-    repository = 'https://github.com/biezhihua/android_libdsm'
-    issueTracker = 'https://github.com/biezhihua/android_libdsm'
-}
+//publish {
+//
+//    userOrg = 'biezhihua-open'
+//    repoName = 'android'
+//    groupId = 'open.android.lib.dsm'
+//    artifactId = 'libdsm'
+//    publishVersion = '1.1.4'
+//    desc = 'An Android wrapper for the libdsm'
+//    website = 'https://github.com/biezhihua/android_libdsm'
+//    repository = 'https://github.com/biezhihua/android_libdsm'
+//    issueTracker = 'https://github.com/biezhihua/android_libdsm'
+//}
