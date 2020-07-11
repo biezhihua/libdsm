@@ -235,7 +235,7 @@ open class DsmPlugin : FlutterPlugin, MethodCallHandler, EventChannel.StreamHand
                 }
             }
             "DSM_tree_disconnect" -> {
-                if (call.arguments == null || call.argument<String>(ID).isNullOrEmpty() || call.argument<Int>(TID) != 0) {
+                if (call.arguments == null || call.argument<String>(ID).isNullOrEmpty() || call.argument<Int>(TID) == null) {
                     result.error("PARAM_ERROR", "Illegal parameter", null)
                 } else {
                     val dsmId = call.argument<String>(ID)!!
@@ -260,7 +260,7 @@ open class DsmPlugin : FlutterPlugin, MethodCallHandler, EventChannel.StreamHand
             "DSM_find" -> {
                 if (call.arguments == null ||
                         call.argument<String>(ID).isNullOrEmpty() ||
-                        call.argument<Int>(TID) != 0 ||
+                        call.argument<Int>(TID) == null ||
                         call.argument<String>(PATTERN).isNullOrEmpty()
                 ) {
                     result.error("PARAM_ERROR", "Illegal parameter", null)
@@ -288,7 +288,7 @@ open class DsmPlugin : FlutterPlugin, MethodCallHandler, EventChannel.StreamHand
             "DSM_file_status" -> {
                 if (call.arguments == null ||
                         call.argument<String>(ID).isNullOrEmpty() ||
-                        call.argument<Int>(TID) != 0 ||
+                        call.argument<Int>(TID) == null ||
                         call.argument<String>(PATH).isNullOrEmpty()
                 ) {
                     result.error("PARAM_ERROR", "Illegal parameter", null)
