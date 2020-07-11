@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9DA45C8224B9852D0042C181 /* libcharset.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DEA509E23D8CCEB00932DB1 /* libcharset.a */; };
+		9DA45C8324B9852D0042C181 /* libdsm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DEA509D23D8CCEB00932DB1 /* libdsm.a */; };
+		9DA45C8424B9852D0042C181 /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DEA509C23D8CCEB00932DB1 /* libiconv.a */; };
+		9DA45C8524B9852D0042C181 /* libtasn1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DEA509B23D8CCEB00932DB1 /* libtasn1.a */; };
 		9DB3498C23D9CE1600F7FE36 /* json.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DB3498B23D9CE1500F7FE36 /* json.h */; };
 		9DEA508223D8CCA300932DB1 /* libdsm_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DEA507823D8CCA300932DB1 /* libdsm_ios.framework */; };
 		9DEA508723D8CCA300932DB1 /* libdsm_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEA508623D8CCA300932DB1 /* libdsm_iosTests.swift */; };
 		9DEA508923D8CCA300932DB1 /* libdsm_ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DEA507B23D8CCA300932DB1 /* libdsm_ios.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9DEA509F23D8CCF500932DB1 /* libcharset.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DEA509E23D8CCEB00932DB1 /* libcharset.a */; };
-		9DEA50A023D8CCF500932DB1 /* libdsm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DEA509D23D8CCEB00932DB1 /* libdsm.a */; };
-		9DEA50A123D8CCF500932DB1 /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DEA509C23D8CCEB00932DB1 /* libiconv.a */; };
-		9DEA50A223D8CCF500932DB1 /* libtasn1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DEA509B23D8CCEB00932DB1 /* libtasn1.a */; };
 		9DEA50AA23D8CDE000932DB1 /* Dsm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9DEA50A923D8CDDF00932DB1 /* Dsm.cpp */; };
 		9DEA50AD23D8CDEC00932DB1 /* Dsm.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DEA50AB23D8CDEC00932DB1 /* Dsm.h */; };
 		9DEA50AE23D8CDEC00932DB1 /* Log.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DEA50AC23D8CDEC00932DB1 /* Log.h */; };
@@ -64,10 +64,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DEA50A023D8CCF500932DB1 /* libdsm.a in Frameworks */,
-				9DEA50A123D8CCF500932DB1 /* libiconv.a in Frameworks */,
-				9DEA509F23D8CCF500932DB1 /* libcharset.a in Frameworks */,
-				9DEA50A223D8CCF500932DB1 /* libtasn1.a in Frameworks */,
+				9DA45C8224B9852D0042C181 /* libcharset.a in Frameworks */,
+				9DA45C8324B9852D0042C181 /* libdsm.a in Frameworks */,
+				9DA45C8424B9852D0042C181 /* libiconv.a in Frameworks */,
+				9DA45C8524B9852D0042C181 /* libtasn1.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,7 +348,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				VALID_ARCHS = "arm64 arm64e";
+				VALID_ARCHS = "arm64 x86_64 arm64e";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -407,7 +407,7 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "arm64 arm64e";
+				VALID_ARCHS = "arm64 arm64e x86_64";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};

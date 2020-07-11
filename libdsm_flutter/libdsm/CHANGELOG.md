@@ -1,3 +1,9 @@
+## 1.0.2
+
+* file timestamp support
+* support android amulator arch x86_64 x86
+* support ios amulator arch x86_64
+
 ## 1.0.1
 
 * api document

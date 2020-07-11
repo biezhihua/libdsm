@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'libdsm'
-  s.version          = '0.0.1'
+  s.version          = '0.0.2'
   s.summary          = 'A new flutter plugin project.'
   s.description      = <<-DESC
 A new flutter plugin project.
@@ -15,7 +15,7 @@ A new flutter plugin project.
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.platform = :ios, '8.0'
+  s.platform = :ios, '10.0'
 
   s.preserve_paths = 'libdsm_ios.framework'
   s.xcconfig = { 'OTHER_LDFLAGS' => '-framework libdsm_ios' }
