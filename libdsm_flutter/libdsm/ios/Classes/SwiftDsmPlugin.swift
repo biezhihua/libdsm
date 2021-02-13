@@ -117,7 +117,7 @@ public class SwiftDsmPlugin: NSObject, FlutterPlugin, FlutterStreamHandler,Disco
                 break
             } else {
                 let dsmId = args![SwiftDsmPlugin.ID] as! String
-                let host = args![SwiftDsmPlugin.ADDRESS] as! String
+                let host = args![SwiftDsmPlugin.HOST] as! String
                 let loginName = args![SwiftDsmPlugin.LOGIN_NAME] as! String
                 let password = args![SwiftDsmPlugin.PASSWORD] as! String
                 let dsm = dsmCache[dsmId]
