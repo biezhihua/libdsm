@@ -31,7 +31,7 @@ static void on_entry_added(void *p_opaque, netbios_ns_entry *entry) {
         entryJson["group"] = group;
         entryJson["name"] = name;
         entryJson["type"] = type;
-        std::string json = entryJson.dump();
+        std::string json = entryJson.dump(-1, ' ', true);
         const char *jsonC = json.c_str();
 
         dsm->onDiscoveryEntryAdded(jsonC);
@@ -55,7 +55,7 @@ static void on_entry_removed(void *p_opaque, netbios_ns_entry *entry) {
         entryJson["group"] = group;
         entryJson["name"] = name;
         entryJson["type"] = type;
-        std::string json = entryJson.dump();
+        std::string json = entryJson.dump(-1, ' ', true);
         const char *jsonC = json.c_str();
 
         dsm->onDiscoveryEntryRemoved(jsonC);
@@ -214,7 +214,7 @@ string *Dsm::shareGetList() {
     }
     result["data"] = data;
     smb_share_list_destroy(share_list);
-    return new string(result.dump().c_str());
+    return new string(result.dump(-1, ' ', true));
 }
 
 int Dsm::treeConnect(const char *name) {
@@ -311,7 +311,7 @@ string *Dsm::find(int tid, const char *pattern) {
     smb_stat_list_destroy(files);
 
     result["data"] = data;
-    return new string(result.dump().c_str());
+    return new string(result.dump(-1, ' ', true));
 }
 
 string *Dsm::fileStatus(int tid, const char *path) {
@@ -360,9 +360,5 @@ string *Dsm::fileStatus(int tid, const char *path) {
     smb_stat_destroy(st);
 
     result["data"] = data;
-    return new string(result.dump().c_str());
+    return new string(result.dump(-1, ' ', true));
 }
-
-
-
-

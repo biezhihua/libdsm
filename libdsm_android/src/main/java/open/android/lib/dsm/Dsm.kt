@@ -5,6 +5,7 @@ package open.android.lib.dsm
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import com.alibaba.fastjson.JSONObject
 import open.android.lib.dsm.annotations.AccessedByNative
 import open.android.lib.dsm.annotations.CalledByNative
 
@@ -74,15 +75,18 @@ class Dsm {
      */
     @CalledByNative
     fun onEventFromNative(what: Int, json: String) {
+        // FIX: Chinese identification error
+        val newJson = JSONObject.parseObject(json).toJSONString()
         when (what) {
             EventType.DISCOVERY_ADD.value -> {
                 handler.post {
-                    discoveryListener?.onEntryAdded(json)
+
+                    discoveryListener?.onEntryAdded(newJson)
                 }
             }
             EventType.DISCOVERY_REMOVE.value -> {
                 handler.post {
-                    discoveryListener?.onEntryRemoved(json)
+                    discoveryListener?.onEntryRemoved(newJson)
                 }
             }
             else -> {
@@ -208,12 +212,7 @@ class Dsm {
 
     private external fun _inverse(self: Any, address: String): String
 
-    private external fun _login(
-        self: Any,
-        host: String,
-        loginName: String,
-        password: String
-    ): Int
+    private external fun _login(self: Any, host: String, loginName: String, password: String): Int
 
     private external fun _logout(self: Any): Int
 

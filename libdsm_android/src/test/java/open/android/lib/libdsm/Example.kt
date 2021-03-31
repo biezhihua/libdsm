@@ -1,9 +1,19 @@
 package open.android.lib.libdsm
 
+import com.alibaba.fastjson.JSONObject
 import open.android.lib.dsm.Dsm
+import org.junit.Test
 
 
 class Example {
+
+    @Test
+    fun parseChinese() {
+        val test = "{\"type\":\"\\u6211\\u662f\\u4e2d\\u6587\"}"
+        val json = JSONObject.parseObject(test)
+        val type = json.getString("type")
+        println(type)
+    }
 
     fun initOrRelase() {
         val dsm = Dsm()
