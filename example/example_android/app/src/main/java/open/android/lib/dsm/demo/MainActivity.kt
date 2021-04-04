@@ -224,8 +224,6 @@ class MainActivity : AppCompatActivity() {
                 viewHolder.login.setOnClickListener {
                     var username = viewHolder.username.text.toString()
                     var password = viewHolder.password.text.toString()
-                    username = "biezhihua"
-                    password = "<Bzh1991823>"
                     mainActivity.loginDsm(address, name, group, username, password)
                 }
             }
