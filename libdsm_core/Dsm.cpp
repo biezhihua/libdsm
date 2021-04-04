@@ -290,10 +290,13 @@ string *Dsm::find(int tid, const char *pattern) {
         json file;
 
         // name
-        file["name"] = smb_stat_name(st);
+        const char *name = smb_stat_name(st);
+        file["name"] = name;
+
+        LOGD("[%s] find %s %s", __func__, pattern, name);
 
         // 0 -> not a directory, != 0 -> directory
-        file["is_dir"] = (smb_stat_get(st, SMB_STAT_ISDIR) != 0 ? 1 : 0);
+        file["is_dir"] = smb_stat_get(st, SMB_STAT_ISDIR) != 0 ? 1 : 0;
 
         // Get file size
         file["size"] = smb_stat_get(st, SMB_STAT_SIZE);
@@ -336,12 +339,14 @@ string *Dsm::fileStatus(int tid, const char *path) {
     smb_stat st = smb_fstat(session, smbTid, path);
 
     json result;
-    json data = json::array();
-
     json file;
 
     // name
-    file["name"] = smb_stat_name(st);
+    const char *name = smb_stat_name(st);
+    // FIXME: 修复中文错误
+    file["name"] = path;
+
+    LOGD("[%s] fileStatus %s %s", __func__, path, name);
 
     // 0 -> not a directory, != 0 -> directory
     file["is_dir"] = (smb_stat_get(st, SMB_STAT_ISDIR) != 0 ? 1 : 0);
@@ -361,9 +366,8 @@ string *Dsm::fileStatus(int tid, const char *path) {
     // Get file last moditification time
     file["last_moditification_time"] = smb_stat_get(st, SMB_STAT_MTIME);
 
-    data.push_back(file);
     smb_stat_destroy(st);
 
-    result["data"] = data;
+    result["data"] = file;
     return new string(result.dump(-1, ' ', true, nlohmann::json::error_handler_t::replace));
 }

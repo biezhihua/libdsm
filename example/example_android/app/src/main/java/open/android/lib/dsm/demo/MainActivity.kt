@@ -255,21 +255,52 @@ class MainActivity : AppCompatActivity() {
             return ViewHolder(view)
         }
 
+        var path = ""
         override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-            val fileName = dataset[position] as? String
-            fileName?.let {
+            val itemData = dataset[position]
+            if (itemData is String) {
+                processShare(itemData, viewHolder)
+            } else if (itemData is JSONObject) {
+                val fileName = itemData.getString("name")
                 viewHolder.file_name.text = fileName
                 viewHolder.itemView.setOnClickListener {
-                    val tid = dsm?.treeConnect(fileName)
-                    if (tid != null && tid > 0) {
-                        val result = dsm?.find(tid, "\\*")
-                        Log.d(TAG, "onBindViewHolder() called : $result")
-                    } else {
-                        mainActivity.tip.duration = Snackbar.LENGTH_LONG
-                        mainActivity.tip.setText("错误码 $tid")
-                        mainActivity.tip.show()
-
+                    if (tid != null) {
+                        val fileStatus = dsm?.fileStatus(tid!!, path + "\\" + fileName)
+                        val data = fileStatus?.getJSONObject("data")
+                        val isDir = data?.getIntValue("is_dir")
+                        if (isDir == 1) {
+                            val dirName = data.getString("name")
+                            val findNext = "$dirName\\*"
+                            dsm?.find(tid!!, findNext)?.getJSONArray("data")?.let {
+                                path += dirName
+                                Log.d(TAG, "onBindViewHolder() called : $it")
+                                setDatas(it)
+                            }
+                        }
+                        Log.d(TAG, "onBindViewHolder() called:  status = ${fileStatus}")
                     }
+                }
+            }
+        }
+
+        private var tid: Int? = null
+
+        private fun processShare(
+            shareName: String,
+            viewHolder: ViewHolder
+        ) {
+            viewHolder.file_name.text = shareName
+            viewHolder.itemView.setOnClickListener {
+                tid = dsm?.treeConnect(shareName)
+                if (tid != null && tid!! > 0) {
+                    dsm?.find(tid!!, "\\*")?.getJSONArray("data")?.let {
+                        Log.d(TAG, "processShare() called : $it")
+                        setDatas(it)
+                    }
+                } else {
+                    mainActivity.tip.duration = Snackbar.LENGTH_LONG
+                    mainActivity.tip.setText("错误码 $tid")
+                    mainActivity.tip.show()
                 }
             }
         }
@@ -278,15 +309,18 @@ class MainActivity : AppCompatActivity() {
 
         fun addData(data: JSONObject) {
             dataset.add(data)
-            notifyItemChanged(0, dataset.size)
+            notifyDataSetChanged()
         }
 
         fun addDatas(datas: JSONArray) {
             dataset.addAll(datas)
-            notifyItemChanged(0, dataset.size)
+            notifyDataSetChanged()
         }
 
+        fun setDatas(datas: JSONArray) {
+            dataset.clear()
+            dataset.addAll(datas)
+            notifyDataSetChanged()
+        }
     }
-
-
 }

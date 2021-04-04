@@ -141,7 +141,8 @@ class Dsm {
      * @return An a json list.
      */
     fun getShareList(): JSONObject? {
-        return JSONObject.parseObject(_shareGetListJson(this))
+        val result = _shareGetListJson(this)
+        return JSONObject.parseObject(result)
     }
 
     /**
@@ -180,7 +181,8 @@ class Dsm {
      * @return An json list of files.
      */
     fun find(tid: Int, pattern: String): JSONObject? {
-        return JSONObject.parseObject(_find(this, tid, pattern))
+        val result = _find(this, tid, pattern)
+        return JSONObject.parseObject(result)
     }
 
     /**
@@ -193,7 +195,8 @@ class Dsm {
      * destory this object with smb_stat_destroy after usage.
      */
     fun fileStatus(tid: Int, path: String): JSONObject? {
-        return JSONObject.parseObject(_fileStatus(this, tid, path))
+        val result = _fileStatus(this, tid, path)
+        return JSONObject.parseObject(result)
     }
 
     protected fun finalize() {
