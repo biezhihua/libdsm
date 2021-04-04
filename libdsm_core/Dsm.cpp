@@ -140,25 +140,29 @@ int Dsm::login(const char *host, const char *loginName, const char *password) {
     loginNS = netbios_ns_new();
     session = smb_session_new();
     struct sockaddr_in addr{};
-    if (netbios_ns_resolve(loginNS, host, NETBIOS_FILESERVER, &addr.sin_addr.s_addr)) {
+    int resolve_code = netbios_ns_resolve(loginNS, host, NETBIOS_FILESERVER, &addr.sin_addr.s_addr);
+    if (resolve_code) {
         LOGE("[%s] Unable to perform name resolution for %s ", __func__, host);
         smb_session_destroy(session);
         netbios_ns_destroy(loginNS);
         session = nullptr;
-        return DSM_ERROR;
+        return resolve_code;
     }
-    if (smb_session_connect(session,
-                            host, addr.sin_addr.s_addr, SMB_TRANSPORT_TCP) == DSM_SUCCESS) {
+    int session_connect_code = smb_session_connect(session, host, addr.sin_addr.s_addr,
+                                                   SMB_TRANSPORT_TCP);
+    if (session_connect_code == DSM_SUCCESS) {
         LOGD("[%s] Successfully connected to %s ", __func__, host);
     } else {
-        LOGD("[%s] Unable to connect to %s ", __func__, host);
+        LOGD("[%s] Unable to connect to %s, connect code %d, transport code %d", __func__, host,
+             session_connect_code, SMB_TRANSPORT_TCP);
         smb_session_destroy(session);
         netbios_ns_destroy(loginNS);
         session = nullptr;
-        return DSM_ERROR;
+        return session_connect_code;
     }
     smb_session_set_creds(session, host, loginName, password);
-    if (smb_session_login(session) == DSM_SUCCESS) {
+    int login_code = smb_session_login(session);
+    if (login_code == DSM_SUCCESS) {
         if (smb_session_is_guest(session)) {
             LOGD("[%s] Login failed but we were logged in as GUEST", __func__);
         } else {
@@ -172,7 +176,7 @@ int Dsm::login(const char *host, const char *loginName, const char *password) {
         smb_session_destroy(session);
         netbios_ns_destroy(loginNS);
         session = nullptr;
-        return DSM_ERROR;
+        return login_code;
     }
 }
 
