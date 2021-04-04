@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.AsyncTask
 import android.util.Log
 import androidx.annotation.NonNull
+import com.alibaba.fastjson.JSONObject
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
@@ -11,7 +12,6 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import open.android.lib.dsm.Dsm
-import org.json.JSONObject
 import java.util.*
 
 
@@ -101,7 +101,7 @@ open class DsmPlugin : FlutterPlugin, MethodCallHandler, EventChannel.StreamHand
 
                     @SuppressLint("StaticFieldLeak")
                     val task = object : AsyncTask<Void?, Void?, Any?>() {
-                        override fun doInBackground(vararg params: Void?): Any? {
+                        override fun doInBackground(vararg params: Void?): Any {
                             return dsm.resolve(name)
                         }
 
@@ -124,7 +124,7 @@ open class DsmPlugin : FlutterPlugin, MethodCallHandler, EventChannel.StreamHand
 
                     @SuppressLint("StaticFieldLeak")
                     val task = object : AsyncTask<Void?, Void?, Any?>() {
-                        override fun doInBackground(vararg params: Void?): Any? {
+                        override fun doInBackground(vararg params: Void?): Any {
                             return dsm.inverse(address)
                         }
 
@@ -154,7 +154,7 @@ open class DsmPlugin : FlutterPlugin, MethodCallHandler, EventChannel.StreamHand
 
                     @SuppressLint("StaticFieldLeak")
                     val task = object : AsyncTask<Void?, Void?, Any?>() {
-                        override fun doInBackground(vararg params: Void?): Any? {
+                        override fun doInBackground(vararg params: Void?): Any {
                             return dsm.login(host, loginName, password)
                         }
 
@@ -176,7 +176,7 @@ open class DsmPlugin : FlutterPlugin, MethodCallHandler, EventChannel.StreamHand
 
                     @SuppressLint("StaticFieldLeak")
                     val task = object : AsyncTask<Void?, Void?, Any?>() {
-                        override fun doInBackground(vararg params: Void?): Any? {
+                        override fun doInBackground(vararg params: Void?): Any {
                             return dsm.logout()
                         }
 
@@ -221,7 +221,7 @@ open class DsmPlugin : FlutterPlugin, MethodCallHandler, EventChannel.StreamHand
 
                     @SuppressLint("StaticFieldLeak")
                     val task = object : AsyncTask<Void?, Void?, Any?>() {
-                        override fun doInBackground(vararg params: Void?): Any? {
+                        override fun doInBackground(vararg params: Void?): Any {
                             return dsm.treeConnect(name)
                         }
 
@@ -244,7 +244,7 @@ open class DsmPlugin : FlutterPlugin, MethodCallHandler, EventChannel.StreamHand
 
                     @SuppressLint("StaticFieldLeak")
                     val task = object : AsyncTask<Void?, Void?, Any?>() {
-                        override fun doInBackground(vararg params: Void?): Any? {
+                        override fun doInBackground(vararg params: Void?): Any {
                             return dsm.treeDisconnect(tid)
                         }
 
@@ -329,17 +329,18 @@ open class DsmPlugin : FlutterPlugin, MethodCallHandler, EventChannel.StreamHand
             val dsmId = arguments as String
             val dsm = dsmCache[dsmId]
             dsm?.discoveryListener = object : Dsm.DiscoveryListener {
-                override fun onEntryAdded(json: String) {
+
+                override fun onEntryAdded(json: JSONObject) {
                     val resultJson = JSONObject()
-                    resultJson.put("type", Dsm.Companion.EventType.DISCOVERY_ADD.value)
-                    resultJson.put("result", JSONObject(json))
+                    resultJson["type"] = Dsm.Companion.EventType.DISCOVERY_ADD.value
+                    resultJson["result"] = json
                     events?.success(resultJson.toString())
                 }
 
-                override fun onEntryRemoved(json: String) {
+                override fun onEntryRemoved(json: JSONObject) {
                     val resultJson = JSONObject()
-                    resultJson.put("type", Dsm.Companion.EventType.DISCOVERY_REMOVE.value)
-                    resultJson.put("result", JSONObject(json))
+                    resultJson["type"] = Dsm.Companion.EventType.DISCOVERY_REMOVE.value
+                    resultJson["result"] = json
                     events?.success(resultJson.toString())
                 }
             }
