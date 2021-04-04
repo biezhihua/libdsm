@@ -85,7 +85,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Flutter Libdsm example'),
+          title: const Text('Flutter LIBDSM'),
         ),
         body: Column(
           // <Widget> is the type of items in the list.
