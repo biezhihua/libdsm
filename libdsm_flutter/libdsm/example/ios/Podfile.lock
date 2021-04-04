@@ -1,6 +1,6 @@
 PODS:
   - Flutter (1.0.0)
-  - libdsm (0.0.2):
+  - libdsm (1.1.7):
     - Flutter
 
 DEPENDENCIES:
@@ -15,7 +15,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
-  libdsm: 57a233f2d5463ffe32c6dc815d1e096c28d99794
+  libdsm: dfc73f86c49ec471adee0cc63f33b5a341e5f11e
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 

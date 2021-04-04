@@ -4,24 +4,23 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'libdsm'
-  s.version          = '0.0.2'
-  s.summary          = 'A new flutter plugin project.'
+  s.version          = '1.1.7'
+  s.summary          = 'An all platform wrapper for the libdsm(Defective SMB) library.'
   s.description      = <<-DESC
-A new flutter plugin project.
+An all platform wrapper for the libdsm(Defective SMB) library.
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'https://github.com/biezhihua/libdsm'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'biezhihua' => 'biezhihua@gmail.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
   s.platform = :ios, '10.0'
+  s.ios.deployment_target = '14.4'
 
   s.preserve_paths = 'libdsm_ios.framework'
   s.xcconfig = { 'OTHER_LDFLAGS' => '-framework libdsm_ios' }
   s.vendored_frameworks = 'libdsm_ios.framework'
 
-  # Flutter.framework does not contain a i386 slice. Only x86_64 simulators are supported.
-  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'VALID_ARCHS[sdk=iphonesimulator*]' => 'x86_64' }
-  s.swift_version = '5.0'
+  s.swift_version = '5.3.2'
 end
