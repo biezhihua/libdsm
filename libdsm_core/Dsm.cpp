@@ -158,7 +158,8 @@ int Dsm::login(const char *host, const char *loginName, const char *password) {
         smb_session_destroy(session);
         netbios_ns_destroy(loginNS);
         session = nullptr;
-        return session_connect_code;
+        // FIXME: libdsm wrongly return network error when the server can't handle the SMBv1 protocol
+        return DSM_ERROR_GENERIC;
     }
     smb_session_set_creds(session, host, loginName, password);
     int login_code = smb_session_login(session);

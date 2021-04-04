@@ -185,7 +185,7 @@ class MainActivity : AppCompatActivity() {
         )
         if (loginResult == -3) {
             tip.duration = Snackbar.LENGTH_LONG
-            tip.setText("需要网络权限")
+            tip.setText("错误码 $loginResult")
             tip.show()
         }
     }
