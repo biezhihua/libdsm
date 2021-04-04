@@ -1,3 +1,5 @@
+## 1.1.7
+
 ## 1.0.2
 
 * file timestamp support
