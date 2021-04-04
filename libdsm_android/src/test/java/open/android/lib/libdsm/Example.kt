@@ -26,10 +26,10 @@ class Example {
         dsm.init()
 
         dsm.discoveryListener = object : Dsm.DiscoveryListener {
-            override fun onEntryAdded(json: String) {
+            override fun onEntryAdded(json: JSONObject) {
             }
 
-            override fun onEntryRemoved(json: String) {
+            override fun onEntryRemoved(json: JSONObject) {
             }
 
         }

@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.fastjson.JSONArray
@@ -26,8 +26,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private var dsm: Dsm? = null
-    private lateinit var root: ConstraintLayout
-    private lateinit var container: RecyclerView
+    private lateinit var root: LinearLayout
+    private lateinit var server_container: RecyclerView
+    private lateinit var files_container: RecyclerView
     private lateinit var tip: Snackbar
     private var discoveryProgress = 1
     private val tipUpdateTask: Runnable = object : Runnable {
@@ -45,22 +46,27 @@ class MainActivity : AppCompatActivity() {
         }
     }
     val dsmSourceAdapter = DsmConnectAdapter(this)
+    var fileSourceAdapter: DsmShareAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        initView()
+        root = findViewById(R.id.root)
         initDSM()
         initDiscoveryTip()
+        initView()
         discoverySMB()
     }
 
     private fun initView() {
-        root = findViewById(R.id.root)
-        container = findViewById(R.id.container)
+        server_container = findViewById(R.id.server_container)
+        server_container.layoutManager = LinearLayoutManager(this)
+        server_container.adapter = dsmSourceAdapter
 
-        container.layoutManager = LinearLayoutManager(this)
-        container.adapter = dsmSourceAdapter
+        files_container = findViewById(R.id.files_container)
+        files_container.layoutManager = LinearLayoutManager(this)
+        fileSourceAdapter = DsmShareAdapter(this, dsm)
+        files_container.adapter = fileSourceAdapter
     }
 
     private fun discoverySMB() {
@@ -83,17 +89,17 @@ class MainActivity : AppCompatActivity() {
         // 初始化DSM监听器
         dsm?.discoveryListener = object : Dsm.DiscoveryListener {
 
-            override fun onEntryAdded(json: String) {
+            override fun onEntryAdded(json: JSONObject) {
                 Log.d(TAG, "onEntryAdded() called with: json = [$json]")
                 tryDismissTip()
 
                 if (json.isNotEmpty()) {
-                    dsmSourceAdapter.addData(JSONObject.parseObject(json))
+                    dsmSourceAdapter.addData(json)
                 }
 
             }
 
-            override fun onEntryRemoved(json: String) {
+            override fun onEntryRemoved(json: JSONObject) {
                 Log.d(TAG, "onEntryRemoved() called with: json = [$json]")
             }
 
@@ -120,55 +126,6 @@ class MainActivity : AppCompatActivity() {
         dsm = null
     }
 
-    class DsmConnectAdapter(val mainActivity: MainActivity) :
-        RecyclerView.Adapter<DsmConnectAdapter.ViewHolder>() {
-
-        private val dataset = JSONArray()
-
-        class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val address: TextView = view.findViewById(R.id.address)
-            val name: TextView = view.findViewById(R.id.name)
-            val group: TextView = view.findViewById(R.id.group)
-            val login: Button = view.findViewById(R.id.login)
-            val username: EditText = view.findViewById(R.id.username)
-            val password: EditText = view.findViewById(R.id.username)
-        }
-
-        override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-            val view = LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.item_dsm_source, viewGroup, false)
-            return ViewHolder(view)
-        }
-
-        override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-            val itemData = dataset[position] as? JSONObject
-            itemData?.let {
-                val address = it.getString("address")
-                val name = it.getString("name")
-                val group = it.getString("group")
-
-                viewHolder.address.text = address
-                viewHolder.name.text = name
-                viewHolder.group.text = group
-                viewHolder.login.setOnClickListener {
-                    var username = viewHolder.username.text.toString()
-                    var password = viewHolder.password.text.toString()
-                    username = "biezhihua"
-                    password = "<Bzh1991823>"
-
-                    mainActivity.loginDsm(address, name, group, username, password)
-                }
-            }
-        }
-
-        override fun getItemCount() = dataset.size
-
-        fun addData(data: JSONObject) {
-            dataset.add(data)
-            notifyItemChanged(0, dataset.size)
-        }
-
-    }
 
     private fun loginDsm(
         address: String,
@@ -187,46 +144,15 @@ class MainActivity : AppCompatActivity() {
             tip.duration = Snackbar.LENGTH_LONG
             tip.setText("错误码 $loginResult")
             tip.show()
+        } else {
+            dsm?.getShareList()?.let { list ->
+                val shareListRawJson = list.getJSONArray("data")
+                fileSourceAdapter?.addDatas(shareListRawJson)
+            }
         }
     }
 
-//    fun startDiscovery(view: View) {
-//        dsm.startDiscovery()
-//    }
-//
-//    fun stopDiscovery(view: View) {
-//        dsm.stopDiscovery()
-//    }
-//
-//    fun init(view: View) {
-//        dsm.init()
-//    }
-//
-//    fun destroy(view: View) {
-//        dsm.release()
-//    }
-//
-//
-//    fun logout(view: View) {
-//        Log.d(TAG, "logout() called with: result = [${dsm.logout()}]")
-//    }
-//
-//    fun login(view: View) {
-//        Log.d(
-//            TAG, "login() called with: name = [SMBSHARE] result = [${
-//                dsm.login(
-//                    "BIEZHIHUA-PC",
-//                    "test",
-//                    "test"
-//                )
-//            }]"
-//        )
-//    }
-//
-//    fun shareList(view: View) {
-//        Log.d(TAG, "shareList() called with: result = [${dsm.getShareList()}]")
-//    }
-//
+
 //    var tid: Int = 0
 //
 //    fun connect(view: View) {
@@ -264,4 +190,103 @@ class MainActivity : AppCompatActivity() {
 //            }]"
 //        )
 //    }
+
+    class DsmConnectAdapter(val mainActivity: MainActivity) :
+        RecyclerView.Adapter<DsmConnectAdapter.ViewHolder>() {
+
+        private val dataset = JSONArray()
+
+        class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+            val address: TextView = view.findViewById(R.id.address)
+            val name: TextView = view.findViewById(R.id.name)
+            val group: TextView = view.findViewById(R.id.group)
+            val login: Button = view.findViewById(R.id.login)
+            val username: EditText = view.findViewById(R.id.username)
+            val password: EditText = view.findViewById(R.id.username)
+        }
+
+        override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
+            val view = LayoutInflater.from(viewGroup.context)
+                .inflate(R.layout.item_dsm_source, viewGroup, false)
+            return ViewHolder(view)
+        }
+
+        override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+            val itemData = dataset[position] as? JSONObject
+            itemData?.let {
+                val address = it.getString("address")
+                val name = it.getString("name")
+                val group = it.getString("group")
+
+                viewHolder.address.text = address
+                viewHolder.name.text = name
+                viewHolder.group.text = group
+                viewHolder.login.setOnClickListener {
+                    var username = viewHolder.username.text.toString()
+                    var password = viewHolder.password.text.toString()
+                    username = "biezhihua"
+                    password = "<Bzh1991823>"
+                    mainActivity.loginDsm(address, name, group, username, password)
+                }
+            }
+        }
+
+        override fun getItemCount() = dataset.size
+
+        fun addData(data: JSONObject) {
+            dataset.add(data)
+            notifyItemChanged(0, dataset.size)
+        }
+
+    }
+
+    class DsmShareAdapter(val mainActivity: MainActivity, val dsm: Dsm?) :
+        RecyclerView.Adapter<DsmShareAdapter.ViewHolder>() {
+
+        private val dataset = JSONArray()
+
+        class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+            val file_name: TextView = view.findViewById(R.id.file_name)
+        }
+
+        override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
+            val view = LayoutInflater.from(viewGroup.context)
+                .inflate(R.layout.item_dsm_file, viewGroup, false)
+            return ViewHolder(view)
+        }
+
+        override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+            val fileName = dataset[position] as? String
+            fileName?.let {
+                viewHolder.file_name.text = fileName
+                viewHolder.itemView.setOnClickListener {
+                    val tid = dsm?.treeConnect(fileName)
+                    if (tid != null && tid > 0) {
+                        val result = dsm?.find(tid, "\\*")
+                        Log.d(TAG, "onBindViewHolder() called : $result")
+                    } else {
+                        mainActivity.tip.duration = Snackbar.LENGTH_LONG
+                        mainActivity.tip.setText("错误码 $tid")
+                        mainActivity.tip.show()
+
+                    }
+                }
+            }
+        }
+
+        override fun getItemCount() = dataset.size
+
+        fun addData(data: JSONObject) {
+            dataset.add(data)
+            notifyItemChanged(0, dataset.size)
+        }
+
+        fun addDatas(datas: JSONArray) {
+            dataset.addAll(datas)
+            notifyItemChanged(0, dataset.size)
+        }
+
+    }
+
+
 }

@@ -19,8 +19,8 @@ class Dsm {
      * SMB server listens to callbacks.
      */
     interface DiscoveryListener {
-        fun onEntryAdded(json: String)
-        fun onEntryRemoved(json: String)
+        fun onEntryAdded(json: JSONObject)
+        fun onEntryRemoved(json: JSONObject)
     }
 
     /**
@@ -76,7 +76,7 @@ class Dsm {
     @CalledByNative
     fun onEventFromNative(what: Int, json: String) {
         // FIX: Chinese identification error
-        val newJson = JSONObject.parseObject(json).toJSONString()
+        val newJson = JSONObject.parseObject(json)
         when (what) {
             EventType.DISCOVERY_ADD.value -> {
                 handler.post {
@@ -140,8 +140,8 @@ class Dsm {
      *
      * @return An a json list.
      */
-    fun getShareList(): String {
-        return _shareGetListJson(this)
+    fun getShareList(): JSONObject? {
+        return JSONObject.parseObject(_shareGetListJson(this))
     }
 
     /**
@@ -179,8 +179,8 @@ class Dsm {
      *
      * @return An json list of files.
      */
-    fun find(tid: Int, pattern: String): String {
-        return _find(this, tid, pattern)
+    fun find(tid: Int, pattern: String): JSONObject? {
+        return JSONObject.parseObject(_find(this, tid, pattern))
     }
 
     /**
@@ -192,8 +192,8 @@ class Dsm {
      * @return An opaque smb_stat or NULL in case of error. You need to
      * destory this object with smb_stat_destroy after usage.
      */
-    fun fileStatus(tid: Int, path: String): String {
-        return _fileStatus(this, tid, path)
+    fun fileStatus(tid: Int, path: String): JSONObject? {
+        return JSONObject.parseObject(_fileStatus(this, tid, path))
     }
 
     protected fun finalize() {
