@@ -1,4 +1,4 @@
-## 1.1.y 
+## 1.1.7
 
 - fix: https://github.com/biezhihua/libdsm/issues/13
 - fix: https://github.com/biezhihua/libdsm/issues/14
