@@ -24,6 +24,7 @@ public class Dsm {
     // Native pointer to DSM object
     private var dsmNativePointer: Int64 = 0
 
+    // 
     public var discoveryListener: DiscoveryListener?
 
     public init() {
@@ -232,6 +233,9 @@ public class Dsm {
     }
 }
 
+/*
+ * Discovery Listener
+ */
 public protocol DiscoveryListener {
     func onEntryAdded(json: String)
     func onEntryRemoved(json: String)
