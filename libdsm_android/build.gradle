@@ -6,7 +6,6 @@ buildscript {
     ext.kotlin_version = '1.4.32'
     repositories {
         google()
-        jcenter()
         mavenCentral()
         maven {
             url "https://jitpack.io"
@@ -21,7 +20,6 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
         mavenCentral()
         maven {
             url "https://jitpack.io"
@@ -32,14 +30,13 @@ allprojects {
 def platformVersion = 21
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
-        versionName "1.1.7"
+        versionName "1.1.8"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -53,7 +50,8 @@ android {
         }
 
         ndk {
-            abiFilters 'armeabi-v7a', 'arm64-v8a'
+            // support all abi armeabi-v7a arm64-v8a x86 x86_64
+            // abiFilters 'armeabi-v7a', 'arm64-v8a'
         }
     }
 
@@ -102,7 +100,7 @@ afterEvaluate {
                 // You can then customize attributes of the publication as shown below.
                 groupId = 'open.android.lib.dsm'
                 artifactId = 'libdsm'
-                version = '1.1.7'
+                version = '1.1.8'
             }
             // Creates a Maven publication called “debug”.
             debug(MavenPublication) {
@@ -111,7 +109,7 @@ afterEvaluate {
 
                 groupId = 'open.android.lib.dsm'
                 artifactId = 'libdsm'
-                version = '1.1.7-DEV'
+                version = '1.1.8-DEV'
             }
         }
     }
