@@ -139,8 +139,8 @@ public class Dsm {
     /*
      * Login to an SMB server, if login fails, it will try to log in again with Gust identity.
      */
-    public func login(_ host: String, _ loginName: String, _ password: String) -> Int32 {
-        return DSM_login(UnsafeMutableRawPointer(&dsmHolder), &dsmNativePointer, host, loginName, password)
+    public func login(_ hostName: String, _ loginName: String, _ password: String) -> Int32 {
+        return DSM_login(UnsafeMutableRawPointer(&dsmHolder), &dsmNativePointer, hostName, loginName, password)
     }
 
     /*

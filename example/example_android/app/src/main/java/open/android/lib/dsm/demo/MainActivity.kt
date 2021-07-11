@@ -134,7 +134,7 @@ class MainActivity : AppCompatActivity() {
         username: String,
         password: String
     ) {
-        val loginResult = dsm?.login(name, username, password)
+        val loginResult = dsm?.login(dsm?.inverse(address)!!, username, password)
         Log.d(
             TAG, "loginDsm() called with: address = [$address]," +
                     " name = [$name], group = [$group], username = [$username]," +
@@ -202,7 +202,7 @@ class MainActivity : AppCompatActivity() {
             val group: TextView = view.findViewById(R.id.group)
             val login: Button = view.findViewById(R.id.login)
             val username: EditText = view.findViewById(R.id.username)
-            val password: EditText = view.findViewById(R.id.username)
+            val password: EditText = view.findViewById(R.id.password)
         }
 
         override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {

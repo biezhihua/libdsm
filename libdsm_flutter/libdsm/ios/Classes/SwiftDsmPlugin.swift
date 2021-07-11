@@ -8,7 +8,7 @@ public class SwiftDsmPlugin: NSObject, FlutterPlugin, FlutterStreamHandler,Disco
     static  let TIME_OUT = "time_out"
     static  let NAME = "name"
     static  let ADDRESS = "address"
-    static  let HOST = "host"
+    static  let HOST_NAME = "hostName"
     static  let LOGIN_NAME = "login_name"
     static  let PASSWORD = "password"
     static  let TID = "tid"
@@ -109,7 +109,7 @@ public class SwiftDsmPlugin: NSObject, FlutterPlugin, FlutterStreamHandler,Disco
         case "DSM_login":
             if (args == nil ||
                 args?[SwiftDsmPlugin.ID] == nil ||
-                args?[SwiftDsmPlugin.HOST] == nil ||
+                args?[SwiftDsmPlugin.HOST_NAME] == nil ||
                 args?[SwiftDsmPlugin.LOGIN_NAME] == nil ||
                 args?[SwiftDsmPlugin.PASSWORD] == nil
                 ) {
@@ -117,13 +117,13 @@ public class SwiftDsmPlugin: NSObject, FlutterPlugin, FlutterStreamHandler,Disco
                 break
             } else {
                 let dsmId = args![SwiftDsmPlugin.ID] as! String
-                let host = args![SwiftDsmPlugin.HOST] as! String
+                let hostName = args![SwiftDsmPlugin.HOST_NAME] as! String
                 let loginName = args![SwiftDsmPlugin.LOGIN_NAME] as! String
                 let password = args![SwiftDsmPlugin.PASSWORD] as! String
                 let dsm = dsmCache[dsmId]
                 
                 DispatchQueue.global().async(){
-                    let loginResult = dsm?.login(host, loginName, password)
+                    let loginResult = dsm?.login(hostName, loginName, password)
                     DispatchQueue.main.async {
                         result(loginResult)
                     }

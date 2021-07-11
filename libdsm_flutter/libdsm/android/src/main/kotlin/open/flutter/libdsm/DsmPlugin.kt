@@ -41,7 +41,7 @@ open class DsmPlugin : FlutterPlugin, MethodCallHandler, EventChannel.StreamHand
         const val TIME_OUT = "time_out"
         const val NAME = "name"
         const val ADDRESS = "address"
-        const val HOST = "host"
+        const val HOST_NAME = "hostName"
         const val LOGIN_NAME = "login_name"
         const val PASSWORD = "password"
         const val TID = "tid"
@@ -140,14 +140,14 @@ open class DsmPlugin : FlutterPlugin, MethodCallHandler, EventChannel.StreamHand
             "DSM_login" -> {
                 if (call.arguments == null ||
                         call.argument<String>(ID).isNullOrEmpty() ||
-                        call.argument<String>(HOST).isNullOrEmpty() ||
+                        call.argument<String>(HOST_NAME).isNullOrEmpty() ||
                         call.argument<String>(LOGIN_NAME).isNullOrEmpty() ||
                         call.argument<String>(PASSWORD).isNullOrEmpty()
                 ) {
                     result.error("PARAM_ERROR", "Illegal parameter", null)
                 } else {
                     val dsmId = call.argument<String>(ID)!!
-                    val host = call.argument<String>(HOST)!!
+                    val hostName = call.argument<String>(HOST_NAME)!!
                     val loginName = call.argument<String>(LOGIN_NAME)!!
                     val password = call.argument<String>(PASSWORD)!!
                     val dsm = dsmCache[dsmId]!!
@@ -155,7 +155,7 @@ open class DsmPlugin : FlutterPlugin, MethodCallHandler, EventChannel.StreamHand
                     @SuppressLint("StaticFieldLeak")
                     val task = object : AsyncTask<Void?, Void?, Any?>() {
                         override fun doInBackground(vararg params: Void?): Any {
-                            return dsm.login(host, loginName, password)
+                            return dsm.login(hostName, loginName, password)
                         }
 
                         override fun onPostExecute(loginResult: Any?) {

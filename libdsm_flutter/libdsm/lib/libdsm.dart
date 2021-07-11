@@ -100,14 +100,14 @@ class Dsm {
   }
 
   /// Login to an SMB server, if login fails, it will try to log in again with Gust identity.
-  Future<int> login(String host, String loginName, String password) async {
+  Future<int> login(String hostName, String loginName, String password) async {
     if (_dsmId == null) {
       return 0;
     }
     int result =
         await _methodChannel.invokeMethod('DSM_login', <String, dynamic>{
       'id': _dsmId,
-      'host': host,
+      'hostName': hostName,
       'login_name': loginName,
       'password': password,
     });

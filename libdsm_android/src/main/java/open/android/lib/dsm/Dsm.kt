@@ -118,8 +118,8 @@ class Dsm {
     /**
      * Login to an SMB server, if login fails, it will try to log in again with Gust identity.
      */
-    fun login(host: String, loginName: String, password: String): Int {
-        return _login(this, host, loginName, password)
+    fun login(hostName: String, loginName: String, password: String): Int {
+        return _login(this, hostName, loginName, password)
     }
 
     /**
