@@ -11,14 +11,14 @@ class Dsm {
 
   static const int EVENT_ENTRY_REMOVE = 1;
 
-  String _dsmId;
+  String? _dsmId;
 
   /// dsm instance uuid
-  String get dsmId => _dsmId;
+  String? get dsmId => _dsmId;
 
-  MethodChannel _methodChannel;
-  EventChannel _eventChannel;
-  Stream<String> _discoveryListener;
+  late MethodChannel _methodChannel;
+  late EventChannel _eventChannel;
+  Stream<String>? _discoveryListener;
 
   Dsm() {
     _methodChannel = const MethodChannel('open.flutter/libdsm');
@@ -27,25 +27,22 @@ class Dsm {
 
   /// discovery change notify
   Stream<String> get onDiscoveryChanged {
-    if (_discoveryListener == null) {
-      _discoveryListener =
-          _eventChannel.receiveBroadcastStream(_dsmId).cast<String>();
-    }
-    return _discoveryListener;
+    _discoveryListener ??= _eventChannel.receiveBroadcastStream(_dsmId).cast<String>();
+    return _discoveryListener!;
   }
 
   /// Initialize the library, set environment variables, and bind C ++ object to Java object.
-  void init() async {
+  Future<void> init() async {
     if (_dsmId != null) {
-      return;
+      return null;
     }
     _dsmId = await _methodChannel.invokeMethod<String>('DSM_init');
   }
 
   /// Release the library and unbind the binding relationship, otherwise it may cause a memory leak.
-  void release() async {
+  Future<void> release() async {
     if (_dsmId == null) {
-      return;
+      return null;
     }
     await _methodChannel.invokeMethod('DSM_release', <String, dynamic>{
       'id': _dsmId,
@@ -55,18 +52,18 @@ class Dsm {
 
   /// Start to discover the SMB server in the local area network.
   /// When any SMB server is found or when the SMB server is disappears, a callback notification will be generated.
-  void startDiscovery({int timeout = 4}) async {
+  Future<void> startDiscovery({int timeout = 4}) async {
     if (_dsmId == null) {
-      return;
+      return null;
     }
     await _methodChannel.invokeMethod('DSM_start_discovery',
         <String, dynamic>{'id': _dsmId, 'time_out': timeout});
   }
 
   /// Stop discovering SMB servers in the LAN.
-  void stopDiscovery() async {
+  Future<void> stopDiscovery() async {
     if (_dsmId == null) {
-      return;
+      return null;
     }
     await _methodChannel
         .invokeMethod('DSM_stop_discovery', <String, dynamic>{'id': _dsmId});
@@ -100,14 +97,14 @@ class Dsm {
   }
 
   /// Login to an SMB server, if login fails, it will try to log in again with Gust identity.
-  Future<int> login(String hostName, String loginName, String password) async {
+  Future<int> login(String host, String loginName, String password) async {
     if (_dsmId == null) {
       return 0;
     }
     int result =
         await _methodChannel.invokeMethod('DSM_login', <String, dynamic>{
       'id': _dsmId,
-      'hostName': hostName,
+      'host': host,
       'login_name': loginName,
       'password': password,
     });
