@@ -1,6 +1,6 @@
 name: libdsm
 description: An all platform wrapper for the libdsm(Defective SMB) library https://videolabs.github.io/libdsm/
-version: 2.0.0
+version: 1.1.9
 homepage: https://github.com/biezhihua/libdsm
 
 environment:

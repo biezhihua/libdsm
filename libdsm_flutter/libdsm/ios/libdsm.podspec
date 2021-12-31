@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'libdsm'
-  s.version          = '1.1.7'
+  s.version          = '1.1.9'
   s.summary          = 'An all platform wrapper for the libdsm(Defective SMB) library.'
   s.description      = <<-DESC
 An all platform wrapper for the libdsm(Defective SMB) library.
@@ -16,7 +16,7 @@ An all platform wrapper for the libdsm(Defective SMB) library.
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
   s.platform = :ios, '10.0'
-  s.ios.deployment_target = '14.4'
+  s.ios.deployment_target = '15.2'
 
   s.preserve_paths = 'libdsm_ios.framework'
   s.xcconfig = { 'OTHER_LDFLAGS' => '-framework libdsm_ios' }

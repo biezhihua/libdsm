@@ -109,7 +109,7 @@ afterEvaluate {
                 // You can then customize attributes of the publication as shown below.
                 groupId = 'open.android.lib.dsm'
                 artifactId = 'libdsm'
-                version = '1.1.8'
+                version = '1.1.9'
             }
             // Creates a Maven publication called “debug”.
             debug(MavenPublication) {
@@ -118,7 +118,7 @@ afterEvaluate {
 
                 groupId = 'open.android.lib.dsm'
                 artifactId = 'libdsm'
-                version = '1.1.8-DEV'
+                version = '1.1.9-DEV'
             }
         }
     }
