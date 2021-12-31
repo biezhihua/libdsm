@@ -1,3 +1,0 @@
-include ':app'
-include ':libdsm_android'
-project(':libdsm_android').projectDir = file('../../libdsm_android')

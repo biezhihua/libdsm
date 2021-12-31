@@ -1,3 +1,8 @@
+## 1.1.9
+
+- iOS: Deployment target 15.2 / Deployment info 10.0
+- remove iOS and Android example
+
 ## 1.1.7
 
 - fix: https://github.com/biezhihua/libdsm/issues/13
