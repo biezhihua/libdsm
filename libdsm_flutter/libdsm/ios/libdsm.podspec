@@ -22,5 +22,5 @@ An all platform wrapper for the libdsm(Defective SMB) library.
   s.xcconfig = { 'OTHER_LDFLAGS' => '-framework libdsm_ios' }
   s.vendored_frameworks = 'libdsm_ios.framework'
 
-  s.swift_version = '5.3.2'
+  s.swift_version = '5.5.2'
 end
